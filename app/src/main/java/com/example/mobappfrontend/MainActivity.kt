@@ -1,31 +1,41 @@
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Toast
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.items
 import androidx.compose.material.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.unit.dp
 import androidx.activity.compose.setContent
-import androidx.compose.foundation.BorderStroke
-import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.background
+import androidx.compose.foundation.gestures.Orientation
+import androidx.compose.foundation.gestures.ScrollableState
+import androidx.compose.foundation.gestures.scrollable
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.core.app.ComponentActivity
+import androidx.compose.material.Surface
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.material.DropdownMenuItem
+import androidx.compose.material.Text
+import androidx.compose.runtime.*
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.graphics.colorspace.ColorSpaces
 
 
 data class JsonObject(val id: Int, val data: String)
 
+//for dropdown spinner background
+val customColor1 = Color.hsl(228F, 0.6F,0.6F,1f, ColorSpaces.Srgb)
+//for middle section background
+val customColor2 = Color.hsl(226F, 0.4F,0.7F,1f, ColorSpaces.Srgb)
+
 val cities = listOf(
-    "City 1", "City 2", "City 3", "City 4", "City 5", "City 6", "City 7", "City 8",
-    "City 9", "City 10", "City 11", "City 12", "City 13", "City 14", "City 15", "City 16"
+    "Stuttgart", "München", "Berlin", "Potsdam", "Bremen", "Hamburg", "Wiesbaden", "Schwerin",
+    "Hannover", "Düsseldorf", "Mainz", "Saarbrücken", "Dresden", "Magdeburg", "Kiel", "Erfurt"
 )
 
 val jsonData = mutableStateListOf(
@@ -48,70 +58,85 @@ class MainActivity : androidx.activity.ComponentActivity() { //ComponentActivity
 }
 
 //---------------->>> Composables
-@Preview(showBackground = true) //show preview
+//@Preview(showBackground = true) //show preview
 
-/*
+@Preview
 @Composable
-fun MainComposable() {
-    Card(
-        elevation = 5.dp,
-        backgroundColor = Color.DarkGray,
-        border = BorderStroke(2.dp, Color.Black),
-        shape = RoundedCornerShape(15.dp),
-        modifier = Modifier
-            .padding(10.dp)
-            .fillMaxWidth(1f)
-
-    ) {
-        Row(
-            verticalAlignment = Alignment.CenterVertically,
-            modifier = Modifier.padding(10.dp)
-        ){}
-    }
-
+fun ThreeColumnScreenPreview() {
+    AppContent()
 }
-*/
-
 @Composable
 fun AppContent() {
-    val selectedCity = remember { mutableStateOf("") }
-    val selectedLocation = remember { mutableStateOf("") }
-
-    Column(modifier = Modifier.fillMaxSize()) {
-        TopAppBar(
-            title = { Text(text = "Jetpack Compose App") },
-            actions = {
-                Button(
-                    onClick = { selectedLocation.value = "User Location" },
-                    modifier = Modifier.padding(end = 16.dp)
-                ) {
-                    Text(text = "Get Location")
-                }
-            }
-        )
-
-        Box(modifier = Modifier.padding(15.dp)) {
-            MyUI()
-            DropdownMenu(
-                expanded = selectedCity.value.isNotEmpty(),
-                onDismissRequest = { selectedCity.value = "" },
-                modifier = Modifier.align(Alignment.TopStart)
+    Surface(color = customColor2/*MaterialTheme.colors.background*/) {
+        Column(modifier = Modifier.fillMaxSize()) {
+            //Topsection
+            Row(
+                modifier = Modifier
+                    .weight(0.6f)
+                    .fillMaxWidth()
             ) {
-                cities.forEach { city ->
-                    DropdownMenuItem(onClick = { selectedCity.value = city }) {
-                        Text(text = city)
-                    }
-                }
+                // Content for the first row
+                TopSection()
             }
-            Text(
-                text = selectedCity.value.takeIf { it.isNotEmpty() } ?: "Select a city",
-                modifier = Modifier.padding(8.dp)
-            )
-        }
+            //Middlesection
+            Row(
+                modifier = Modifier
+                    .weight(5f)
+                    .fillMaxWidth()
+            ) {
+                // Content for the second row
+            }
+            //Bottomsection
+            Row(
 
-        LazyColumn(modifier = Modifier.weight(1f)) {
-            items(jsonData) { item ->
-                Text(text = item.data)
+                modifier = Modifier
+                    .weight(0.4f)
+                    .fillMaxWidth()
+                    .background(Color.Blue)
+
+            ) {
+                // Content for the third row
+            }
+        }
+    }
+}
+
+@Composable
+fun TopSection() {
+    Surface(color = Color.Blue) {
+        Row(modifier = Modifier.fillMaxSize()) {
+            //Dropdownmenu
+            Column(modifier = Modifier.weight(0.1f).fillMaxHeight()) { }
+
+            Column(
+                modifier = Modifier
+                    .weight(2f)
+                    .fillMaxHeight()
+            ) {
+                // Content for the first column
+                Row(modifier = Modifier
+                    .fillMaxSize()
+                    .weight(0.8f)){ }
+                Row(modifier = Modifier
+                    .fillMaxSize()
+                    .weight(2f)){ DropdownCitiesSelectable() }
+                //Row(modifier = Modifier.fillMaxSize().weight(1f)){ }
+            }
+            //Button for Dropdownmenu Request submit
+            Column(
+                modifier = Modifier
+                    .weight(1f)
+                    .fillMaxHeight()
+            ) {
+                // Content for the second column
+            }
+            //Button for auto location
+            Column(
+                modifier = Modifier
+                    .weight(1f)
+                    .fillMaxHeight()
+            ) {
+                // Content for the third column
             }
         }
     }
@@ -119,9 +144,8 @@ fun AppContent() {
 
 @OptIn(ExperimentalMaterialApi::class)
 @Composable
-fun MyUI() {
-    val listItems = arrayOf("Favorites", "Options", "Settings", "Share")
-    val contextForToast = LocalContext.current.applicationContext
+fun DropdownCitiesSelectable() {
+    //val contextForToast = LocalContext.current.applicationContext
 
     // state of the menu
     var expanded by remember {
@@ -130,7 +154,7 @@ fun MyUI() {
 
     // remember the selected item
     var selectedItem by remember {
-        mutableStateOf(listItems[0])
+        mutableStateOf(cities[0])
     }
 
     // box
@@ -139,19 +163,20 @@ fun MyUI() {
         onExpandedChange = {
             expanded = !expanded
         }
+
     ) {
         // text field
         TextField(
             value = selectedItem,
             onValueChange = {},
             readOnly = true,
-            label = { Text(text = "Label") },
+            label = { Text(text = "Stadt auswählen:") },
             trailingIcon = {
                 ExposedDropdownMenuDefaults.TrailingIcon(
                     expanded = expanded
                 )
             },
-            colors = ExposedDropdownMenuDefaults.textFieldColors()
+            colors = ExposedDropdownMenuDefaults.textFieldColors(textColor = Color.White, disabledTextColor = Color.Gray, backgroundColor = customColor1, )
         )
 
         // menu
@@ -161,11 +186,12 @@ fun MyUI() {
         ) {
             // this is a column scope
             // all the items are added vertically
-            listItems.forEach { selectedOption ->
+            cities.forEach { selectedOption ->
                 // menu item
                 DropdownMenuItem(onClick = {
+                    //on click Dropdown
                     selectedItem = selectedOption
-                    Toast.makeText(contextForToast, selectedOption, Toast.LENGTH_SHORT).show()
+                    //Toast.makeText(contextForToast, selectedOption, Toast.LENGTH_SHORT).show()
                     expanded = false
                 }) {
                     Text(text = selectedOption)
@@ -174,4 +200,9 @@ fun MyUI() {
         }
     }
 }
+
+
+
+
+
 
