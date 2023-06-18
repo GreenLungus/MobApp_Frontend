@@ -19,11 +19,14 @@ import androidx.compose.material.Surface
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.DropdownMenuItem
 import androidx.compose.material.Text
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.colorspace.ColorSpaces
+import androidx.compose.ui.unit.dp
 
 
 data class JsonObject(val id: Int, val data: String)
@@ -93,6 +96,8 @@ fun AppContent() {
                     .weight(0.4f)
                     .fillMaxWidth()
                     .background(Color.Blue)
+                    //.padding(40.dp)
+                    //.clip(shape = RoundedCornerShape(20.dp))
 
             ) {
                 // Content for the third row
@@ -145,35 +150,33 @@ fun TopSection() {
 @OptIn(ExperimentalMaterialApi::class)
 @Composable
 fun DropdownCitiesSelectable() {
-    //val contextForToast = LocalContext.current.applicationContext
-
-    // state of the menu
-    var expanded by remember {
+    // state of the menu - either expanded or not - default false
+    var expandstate by remember {
         mutableStateOf(false)
     }
 
-    // remember the selected item
+    // remember the selected item and use first in list as default
     var selectedItem by remember {
         mutableStateOf(cities[0])
     }
 
     // box
     ExposedDropdownMenuBox(
-        expanded = expanded,
+        expanded = expandstate,
         onExpandedChange = {
-            expanded = !expanded
+            expandstate  = !expandstate
         }
 
     ) {
         // text field
         TextField(
-            value = selectedItem,
-            onValueChange = {},
+            value = selectedItem, //display selected item, later IMPORTANT for backend communication
+            onValueChange = {},    //left empty
             readOnly = true,
             label = { Text(text = "Stadt auswählen:") },
             trailingIcon = {
                 ExposedDropdownMenuDefaults.TrailingIcon(
-                    expanded = expanded
+                    expanded = expandstate
                 )
             },
             colors = ExposedDropdownMenuDefaults.textFieldColors(textColor = Color.White, disabledTextColor = Color.Gray, backgroundColor = customColor1, )
@@ -181,24 +184,28 @@ fun DropdownCitiesSelectable() {
 
         // menu
         ExposedDropdownMenu(
-            expanded = expanded,
-            onDismissRequest = { expanded = false }
+            expanded = expandstate,
+            onDismissRequest = { expandstate = false }
         ) {
-            // this is a column scope
             // all the items are added vertically
             cities.forEach { selectedOption ->
                 // menu item
                 DropdownMenuItem(onClick = {
                     //on click Dropdown
                     selectedItem = selectedOption
-                    //Toast.makeText(contextForToast, selectedOption, Toast.LENGTH_SHORT).show()
-                    expanded = false
+                    expandstate = false
+                    BErequestMan(selectedItem)
                 }) {
                     Text(text = selectedOption)
                 }
             }
         }
     }
+}
+
+fun BErequestMan(dditem: String) {
+    println("$dditem")
+    //Here follows the backend request for manual selection
 }
 
 
