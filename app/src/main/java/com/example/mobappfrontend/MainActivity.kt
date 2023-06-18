@@ -196,7 +196,7 @@ fun DropdownCitiesSelectable() {
                     expandstate = false
                     BErequestMan(selectedItem)
                 }) {
-                    Text(text = selectedOption)
+                    Text(text = selectedOption) //text in dropdown rows for each city
                 }
             }
         }
