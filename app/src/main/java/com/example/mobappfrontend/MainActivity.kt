@@ -1,3 +1,4 @@
+import android.media.Image
 import android.os.Bundle
 import android.widget.Toast
 import androidx.compose.foundation.layout.*
@@ -19,6 +20,8 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.material.Surface
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.DropdownMenuItem
@@ -91,6 +94,7 @@ fun AppContent() {
                     .fillMaxWidth()
             ) {
                 // Content for the second row
+                //LazyColumnTopics()
                 TopicCards()
             }
             //Bottomsection
@@ -249,9 +253,21 @@ fun BErequestMan(dditem: String) {
 //Make sure the property names in the Kotlin class match the keys in the JSON object.
 data class Topic(
     val title: String,
-    val url: String
+    val url: String,
+    val img: Image
 )
 
+//https://medium.com/@mal7othify/lists-using-lazycolumn-in-jetpack-compose-c70c39805fbc
+@Composable
+fun LazyColumnTopics() {
+    val listt = listOf(
+    "A", "B"
+    ) + ((0..100).map { it.toString() })
+
+    LazyColumn(modifier = Modifier.fillMaxHeight()) {
+
+    }
+}
 
 
 
