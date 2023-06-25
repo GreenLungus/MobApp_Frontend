@@ -27,6 +27,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.colorspace.ColorSpaces
 import androidx.compose.ui.unit.dp
+import com.google.gson.Gson
 
 
 data class JsonObject(val id: Int, val data: String)
@@ -207,6 +208,13 @@ fun BErequestMan(dditem: String) {
     println("$dditem")
     //Here follows the backend request for manual selection
 }
+
+//Kotlin data class that represents the structure of the JSON object.
+//Make sure the property names in the Kotlin class match the keys in the JSON object.
+data class Topic(
+    val title: String,
+    val url: String
+)
 
 
 
