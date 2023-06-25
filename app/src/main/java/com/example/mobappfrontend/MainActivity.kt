@@ -8,6 +8,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.activity.compose.setContent
+import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
 import androidx.compose.foundation.gestures.Orientation
 import androidx.compose.foundation.gestures.ScrollableState
@@ -27,6 +28,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.colorspace.ColorSpaces
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import com.google.gson.Gson
 
 
@@ -89,6 +91,7 @@ fun AppContent() {
                     .fillMaxWidth()
             ) {
                 // Content for the second row
+                TopicCards()
             }
             //Bottomsection
             Row(
@@ -112,7 +115,9 @@ fun TopSection() {
     Surface(color = Color.Blue) {
         Row(modifier = Modifier.fillMaxSize()) {
             //Dropdownmenu
-            Column(modifier = Modifier.weight(0.1f).fillMaxHeight()) { }
+            Column(modifier = Modifier
+                .weight(0.1f)
+                .fillMaxHeight()) { }
 
             Column(
                 modifier = Modifier
@@ -204,6 +209,37 @@ fun DropdownCitiesSelectable() {
     }
 }
 
+@Composable
+fun TopicCards() {
+    //should be composable
+    Card(
+        elevation = 5.dp,
+        backgroundColor = customColor1,
+        border = BorderStroke(2.dp, Color.White),
+        shape = RoundedCornerShape(15.dp),
+        modifier = Modifier
+            .padding(10.dp)
+            .fillMaxWidth(1f)
+    ) {
+        Row(
+            verticalAlignment = Alignment.CenterVertically,
+            modifier = Modifier.padding(10.dp)
+        ) {
+            //Image preview
+            Text(text = "IMAGE\n  here", color = Color.White, fontSize = 15.sp)
+
+            //URL and Title
+            Column(
+
+                modifier = Modifier.padding(10.dp)
+            ) {
+                Text(text = "This is Title ***************", color = Color.White, fontSize = 20.sp)
+                Text(text = "This is URL **************", color = Color.White, fontSize = 16.sp)
+            }
+        }
+
+    }
+}
 fun BErequestMan(dditem: String) {
     println("$dditem")
     //Here follows the backend request for manual selection
