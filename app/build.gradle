@@ -81,4 +81,9 @@ dependencies {
     implementation 'com.google.android.gms:play-services-location:18.0.0'
     implementation 'com.google.firebase:firebase-auth-ktx:21.0.1'
 
+    //added from video: https://www.youtube.com/watch?v=qsUHeg-acJU
+    //implementation "androidx.compose.compiler:compiler:1.4.7"
+    //implementation "androidx.compose.runtime:runtime:1.4.3"
+    //implementation "androidx.compose.runtime:runtime-livedata:1.4.3"
+
 }
