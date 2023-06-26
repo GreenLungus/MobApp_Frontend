@@ -1,38 +1,31 @@
+import android.content.Intent
 import android.media.Image
+import android.net.Uri
 import android.os.Bundle
-import android.widget.Toast
-import androidx.compose.foundation.layout.*
-import androidx.compose.material.*
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.mutableStateListOf
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.ui.Modifier
+import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
-import androidx.compose.foundation.gestures.Orientation
-import androidx.compose.foundation.gestures.ScrollableState
-import androidx.compose.foundation.gestures.scrollable
-import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.material.Surface
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.items
-import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.DropdownMenuItem
-import androidx.compose.material.Text
+import androidx.compose.material.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
-import androidx.compose.ui.draw.clip
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.colorspace.ColorSpaces
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.google.gson.Gson
+import androidx.core.content.ContextCompat.startActivity
+import androidx.compose.foundation.layout.Column
+import androidx.compose.material.Button
+import androidx.compose.material.MaterialTheme
+import androidx.compose.material.Text
+import androidx.compose.runtime.Composable
+import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.unit.dp
 
 
 data class JsonObject(val id: Int, val data: String)
@@ -54,8 +47,9 @@ val jsonData = mutableStateListOf(
     // ... add more JSON objects as needed
 )
 
-//---------------->>> Main
-class MainActivity : androidx.activity.ComponentActivity() { //ComponentActivity() or AppCompatActivity() ??
+
+//------------->>>------------->>> Main
+class MainActivity : ComponentActivity() { //ComponentActivity() or AppCompatActivity() ??
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
@@ -69,11 +63,14 @@ class MainActivity : androidx.activity.ComponentActivity() { //ComponentActivity
 //---------------->>> Composables
 //@Preview(showBackground = true) //show preview
 
+//TODO: Preview renderer
 @Preview
 @Composable
 fun ThreeColumnScreenPreview() {
     AppContent()
 }
+
+//TODO: base app layout
 @Composable
 fun AppContent() {
     Surface(color = customColor2/*MaterialTheme.colors.background*/) {
@@ -114,6 +111,7 @@ fun AppContent() {
     }
 }
 
+//TODO: Header
 @Composable
 fun TopSection() {
     Surface(color = Color.Blue) {
@@ -157,6 +155,7 @@ fun TopSection() {
     }
 }
 
+//TODO: Dropdownmenu
 @OptIn(ExperimentalMaterialApi::class)
 @Composable
 fun DropdownCitiesSelectable() {
@@ -189,7 +188,11 @@ fun DropdownCitiesSelectable() {
                     expanded = expandstate
                 )
             },
-            colors = ExposedDropdownMenuDefaults.textFieldColors(textColor = Color.White, disabledTextColor = Color.Gray, backgroundColor = customColor1, )
+            colors = ExposedDropdownMenuDefaults.textFieldColors(
+                textColor = Color.White,
+                disabledTextColor = Color.Gray,
+                backgroundColor = customColor1
+            )
         )
 
         // menu
@@ -213,9 +216,10 @@ fun DropdownCitiesSelectable() {
     }
 }
 
+//TODO: Content cards
 @Composable
 fun TopicCards() {
-    //should be composable
+    //should get the title, url and img source in single form or as json obj
     Card(
         elevation = 5.dp,
         backgroundColor = customColor1,
@@ -238,12 +242,14 @@ fun TopicCards() {
                 modifier = Modifier.padding(10.dp)
             ) {
                 Text(text = "This is Title ***************", color = Color.White, fontSize = 20.sp)
-                Text(text = "This is URL **************", color = Color.White, fontSize = 16.sp)
+                OpenLinkButton(link = "https://www.google.com")
             }
         }
 
     }
 }
+
+//TODO: Backend request
 fun BErequestMan(dditem: String) {
     println("$dditem")
     //Here follows the backend request for manual selection
@@ -257,6 +263,7 @@ data class Topic(
     val img: Image
 )
 
+//TODO: scrollable list (infinite scroll ?)
 //https://medium.com/@mal7othify/lists-using-lazycolumn-in-jetpack-compose-c70c39805fbc
 @Composable
 fun LazyColumnTopics() {
@@ -269,7 +276,22 @@ fun LazyColumnTopics() {
     }
 }
 
-
-
-
+//TODO: hyperlink button
+@Composable
+fun OpenLinkButton(link: String) {
+    val context = LocalContext.current
+    Box(
+        //modifier = Modifier.fillMaxSize(),
+        contentAlignment = Alignment.Center
+    ) {
+        Button(
+            onClick = {
+                val intent = Intent(Intent.ACTION_VIEW, Uri.parse(link))
+                context.startActivity(intent)
+            }
+        ) {
+            Text(text = "Anschauen!")
+        }
+    }
+}
 
