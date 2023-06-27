@@ -1,3 +1,5 @@
+package com.example.mobappfrontend
+
 import android.content.Intent
 import android.media.Image
 import android.net.Uri
@@ -5,6 +7,7 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.BorderStroke
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
@@ -20,12 +23,17 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.core.content.ContextCompat.startActivity
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.lazy.items
 import androidx.compose.material.Button
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.painter.Painter
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
+import coil.compose.rememberAsyncImagePainter
 
 
 data class JsonObject(val id: Int, val data: String)
@@ -54,8 +62,6 @@ class MainActivity : ComponentActivity() { //ComponentActivity() or AppCompatAct
         super.onCreate(savedInstanceState)
         setContent {
             AppContent()
-            //Text("Hello World")
-            //MainComposable()
         }
     }
 }
@@ -91,8 +97,8 @@ fun AppContent() {
                     .fillMaxWidth()
             ) {
                 // Content for the second row
-                //LazyColumnTopics()
-                TopicCards()
+                LazyColumnTopics()
+                //TopicCards()//liste ubergeben mit geparstem json
             }
             //Bottomsection
             Row(
@@ -207,7 +213,7 @@ fun DropdownCitiesSelectable() {
                     //on click Dropdown
                     selectedItem = selectedOption
                     expandstate = false
-                    BErequestMan(selectedItem)
+                    BErequestMan(selectedItem) // <<---- BE Request with selected item, could be get erlaier as default
                 }) {
                     Text(text = selectedOption) //text in dropdown rows for each city
                 }
@@ -218,7 +224,7 @@ fun DropdownCitiesSelectable() {
 
 //TODO: Content cards
 @Composable
-fun TopicCards() {
+fun TopicCards(topic: Topiccard) {
     //should get the title, url and img source in single form or as json obj
     Card(
         elevation = 5.dp,
@@ -231,19 +237,38 @@ fun TopicCards() {
     ) {
         Row(
             verticalAlignment = Alignment.CenterVertically,
-            modifier = Modifier.padding(10.dp)
+            modifier = Modifier
+                .padding(10.dp)
         ) {
             //Image preview
-            Text(text = "IMAGE\n  here", color = Color.White, fontSize = 15.sp)
+            //Text(text = "IMAGE\n  here", color = Color.White, fontSize = 15.sp)
 
+            val image: Painter = rememberAsyncImagePainter(topic.img)
+            Image(
+                modifier = Modifier
+                    .size(80.dp, 80.dp)
+                    .clip(RoundedCornerShape(16.dp)),
+                painter = image,
+                alignment = Alignment.CenterStart,
+                contentDescription = "",
+                contentScale = ContentScale.Crop
+            )
             //URL and Title
             Column(
-
-                modifier = Modifier.padding(10.dp)
+                horizontalAlignment = Alignment.CenterHorizontally,
+                modifier = Modifier
+                    .padding(10.dp)
+                    .weight(2f)
             ) {
-                var link = "https://www.google.com"
-                Text(text = "This is Title ***************", color = Color.White, fontSize = 20.sp)
-                OpenLinkButton(link)
+                //var link = topic.url
+                //Text(text = "This is Title ***************", color = Color.White, fontSize = 20.sp)
+
+                Text(
+                    text = topic.title,
+                    color = Color.White,
+                    fontSize = 17.sp
+                )
+                OpenLinkButton(link = topic.url)
             }
         }
 
@@ -275,12 +300,24 @@ data class Topiccard(
 //https://medium.com/@mal7othify/lists-using-lazycolumn-in-jetpack-compose-c70c39805fbc
 @Composable
 fun LazyColumnTopics() {
-    val listt = listOf(
-    "A", "B"
-    ) + ((0..100).map { it.toString() })
-
-    LazyColumn(modifier = Modifier.fillMaxHeight()) {
-
+    LazyColumn {
+        val topicCardsList :List<Topiccard> = listOf(
+            Topiccard("So sicher wie Fort Knox (128)", "https://www.ardmediathek.de/video/ODFlZmExYzUtZWJlMy00YTA2LWFlOTQtNTU3MTg1ZGRiODVk", "https://api.ardmediathek.de/image-service/image-collections/urn:ard:image-collection:1349ca4a85ad8334/16x9?imwidth=1920&w=1920"),
+            Topiccard("Tatort: Hinter dem Spiegel", "https://www.ardmediathek.de/video/Y3JpZDovL3N3ci5kZS9hZXgvbzE4MDA0MzU", "https://api.ardmediathek.de/image-service/image-collections/urn:ard:image-collection:a29af08618b987d8/16x9?imwidth=1920&w=1920"),
+            Topiccard("Das letzte Rennen", "https://www.ardmediathek.de/video/Y3JpZDovL3N3ci5kZS9hZXgvbzE3NDYzODU", "https://api.ardmediathek.de/image-service/image-collections/urn:ard:image-collection:a8ce3a563082adae/16x9?imwidth=1920&w=1920"),
+            Topiccard("So sicher wie Fort Knox (128)", "https://www.ardmediathek.de/video/ODFlZmExYzUtZWJlMy00YTA2LWFlOTQtNTU3MTg1ZGRiODVk", "https://api.ardmediathek.de/image-service/image-collections/urn:ard:image-collection:1349ca4a85ad8334/16x9?imwidth=1920&w=1920"),
+            Topiccard("Tatort: Hinter dem Spiegel", "https://www.ardmediathek.de/video/Y3JpZDovL3N3ci5kZS9hZXgvbzE4MDA0MzU", "https://api.ardmediathek.de/image-service/image-collections/urn:ard:image-collection:a29af08618b987d8/16x9?imwidth=1920&w=1920"),
+            Topiccard("Das letzte Rennen", "https://www.ardmediathek.de/video/Y3JpZDovL3N3ci5kZS9hZXgvbzE3NDYzODU", "https://api.ardmediathek.de/image-service/image-collections/urn:ard:image-collection:a8ce3a563082adae/16x9?imwidth=1920&w=1920"),
+            Topiccard("So sicher wie Fort Knox (128)", "https://www.ardmediathek.de/video/ODFlZmExYzUtZWJlMy00YTA2LWFlOTQtNTU3MTg1ZGRiODVk", "https://api.ardmediathek.de/image-service/image-collections/urn:ard:image-collection:1349ca4a85ad8334/16x9?imwidth=1920&w=1920"),
+            Topiccard("Tatort: Hinter dem Spiegel", "https://www.ardmediathek.de/video/Y3JpZDovL3N3ci5kZS9hZXgvbzE4MDA0MzU", "https://api.ardmediathek.de/image-service/image-collections/urn:ard:image-collection:a29af08618b987d8/16x9?imwidth=1920&w=1920"),
+            Topiccard("Das letzte Rennen", "https://www.ardmediathek.de/video/Y3JpZDovL3N3ci5kZS9hZXgvbzE3NDYzODU", "https://api.ardmediathek.de/image-service/image-collections/urn:ard:image-collection:a8ce3a563082adae/16x9?imwidth=1920&w=1920"),
+            Topiccard("So sicher wie Fort Knox (128)", "https://www.ardmediathek.de/video/ODFlZmExYzUtZWJlMy00YTA2LWFlOTQtNTU3MTg1ZGRiODVk", "https://api.ardmediathek.de/image-service/image-collections/urn:ard:image-collection:1349ca4a85ad8334/16x9?imwidth=1920&w=1920"),
+            Topiccard("Tatort: Hinter dem Spiegel", "https://www.ardmediathek.de/video/Y3JpZDovL3N3ci5kZS9hZXgvbzE4MDA0MzU", "https://api.ardmediathek.de/image-service/image-collections/urn:ard:image-collection:a29af08618b987d8/16x9?imwidth=1920&w=1920"),
+            Topiccard("Das letzte Rennen", "https://www.ardmediathek.de/video/Y3JpZDovL3N3ci5kZS9hZXgvbzE3NDYzODU", "https://api.ardmediathek.de/image-service/image-collections/urn:ard:image-collection:a8ce3a563082adae/16x9?imwidth=1920&w=1920")
+        )
+        items(topicCardsList) {
+            TopicCards(topic = it)
+        }
     }
 }
 
@@ -288,18 +325,13 @@ fun LazyColumnTopics() {
 @Composable
 fun OpenLinkButton(link: String) {
     val context = LocalContext.current
-    Box(
-        //modifier = Modifier.fillMaxSize(),
-        contentAlignment = Alignment.Center
-    ) {
-        Button(
-            onClick = {
-                val intent = Intent(Intent.ACTION_VIEW, Uri.parse(link))
-                context.startActivity(intent)
-            }
-        ) {
-            Text(text = "Anschauen!")
+    Button(
+        onClick = {
+            val intent = Intent(Intent.ACTION_VIEW, Uri.parse(link))
+            context.startActivity(intent)
         }
+    ) {
+            Text(text = "Anschauen!")
     }
 }
 
