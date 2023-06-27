@@ -234,7 +234,7 @@ fun TopicCards(topic: Topiccard) {
         Row(
             verticalAlignment = Alignment.CenterVertically,
             modifier = Modifier
-                .padding(10.dp)
+                .padding(5.dp)
         ) {
             //Image preview
             //Text(text = "IMAGE\n  here", color = Color.White, fontSize = 15.sp)
@@ -253,7 +253,7 @@ fun TopicCards(topic: Topiccard) {
             Column(
                 horizontalAlignment = Alignment.CenterHorizontally,
                 modifier = Modifier
-                    .padding(10.dp)
+                    .padding(5.dp)
                     .weight(2f)
             ) {
                 //var link = topic.url
