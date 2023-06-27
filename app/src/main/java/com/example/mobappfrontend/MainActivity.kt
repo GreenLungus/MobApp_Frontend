@@ -241,8 +241,9 @@ fun TopicCards() {
 
                 modifier = Modifier.padding(10.dp)
             ) {
+                var link = "https://www.google.com"
                 Text(text = "This is Title ***************", color = Color.White, fontSize = 20.sp)
-                OpenLinkButton(link = "https://www.google.com")
+                OpenLinkButton(link)
             }
         }
 
@@ -250,18 +251,25 @@ fun TopicCards() {
 }
 
 //TODO: Backend request
-fun BErequestMan(dditem: String) {
-    println("$dditem")
+fun BErequestMan(dbitem: String) {
+    println("$dbitem")
     //Here follows the backend request for manual selection
 }
 
 //Kotlin data class that represents the structure of the JSON object.
 //Make sure the property names in the Kotlin class match the keys in the JSON object.
-data class Topic(
+//1. get object and read into an string
+//2. count rows? words? to determine where the index is and an object starts
+//3. deserialize using gson and write into datac lass and add data class object to list
+//4. use data class list to fill list on main screen
+//TODO: convert Json object to kotlin data class
+data class Topiccard(
     val title: String,
     val url: String,
-    val img: Image
+    val img: String
 )
+
+
 
 //TODO: scrollable list (infinite scroll ?)
 //https://medium.com/@mal7othify/lists-using-lazycolumn-in-jetpack-compose-c70c39805fbc
