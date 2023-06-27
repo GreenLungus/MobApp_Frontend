@@ -1,7 +1,7 @@
 package com.example.mobappfrontend
 
 import android.content.Intent
-import android.media.Image
+//import android.media.Image
 import android.net.Uri
 import android.os.Bundle
 import androidx.activity.ComponentActivity
@@ -21,18 +21,14 @@ import androidx.compose.ui.graphics.colorspace.ColorSpaces
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.core.content.ContextCompat.startActivity
+//import androidx.core.content.ContextCompat.startActivity
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.lazy.items
-import androidx.compose.material.Button
-import androidx.compose.material.MaterialTheme
-import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.unit.dp
 import coil.compose.rememberAsyncImagePainter
 
 
@@ -213,7 +209,7 @@ fun DropdownCitiesSelectable() {
                     //on click Dropdown
                     selectedItem = selectedOption
                     expandstate = false
-                    BErequestMan(selectedItem) // <<---- BE Request with selected item, could be get erlaier as default
+                    beRequestMan(selectedItem) // <<---- BE Request with selected item, could be get erlaier as default
                 }) {
                     Text(text = selectedOption) //text in dropdown rows for each city
                 }
@@ -276,7 +272,7 @@ fun TopicCards(topic: Topiccard) {
 }
 
 //TODO: Backend request
-fun BErequestMan(dbitem: String) {
+fun beRequestMan(dbitem: String) {
     println("$dbitem")
     //Here follows the backend request for manual selection
 }
