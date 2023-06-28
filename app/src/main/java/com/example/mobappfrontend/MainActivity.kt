@@ -29,6 +29,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.text.font.FontWeight
 import coil.compose.rememberAsyncImagePainter
 
 
@@ -261,6 +262,7 @@ fun TopicCards(topic: Topiccard) {
 
                 Text(
                     text = topic.title,
+                    fontWeight = FontWeight.Bold,
                     color = Color.White,
                     fontSize = 17.sp
                 )
@@ -297,6 +299,7 @@ data class Topiccard(
 @Composable
 fun LazyColumnTopics() {
     LazyColumn {
+        //liste aus Json datensatz generieren und an datenklasse übergeben, diese datenklassen als liste an lazycolumn übergeben
         val topicCardsList :List<Topiccard> = listOf(
             Topiccard("So sicher wie Fort Knox (128)", "https://www.ardmediathek.de/video/ODFlZmExYzUtZWJlMy00YTA2LWFlOTQtNTU3MTg1ZGRiODVk", "https://api.ardmediathek.de/image-service/image-collections/urn:ard:image-collection:1349ca4a85ad8334/16x9?imwidth=1920&w=1920"),
             Topiccard("Tatort: Hinter dem Spiegel", "https://www.ardmediathek.de/video/Y3JpZDovL3N3ci5kZS9hZXgvbzE4MDA0MzU", "https://api.ardmediathek.de/image-service/image-collections/urn:ard:image-collection:a29af08618b987d8/16x9?imwidth=1920&w=1920"),
@@ -322,12 +325,14 @@ fun LazyColumnTopics() {
 fun OpenLinkButton(link: String) {
     val context = LocalContext.current
     Button(
+        shape = RoundedCornerShape(15.dp),
         onClick = {
+            //öffnet systembrowser mittels übergebener URL
             val intent = Intent(Intent.ACTION_VIEW, Uri.parse(link))
             context.startActivity(intent)
         }
     ) {
-            Text(text = "Anschauen!")
+            Text(text = " Jetzt anschauen!")
     }
 }
 
