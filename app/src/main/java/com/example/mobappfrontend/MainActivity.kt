@@ -1,5 +1,6 @@
 package com.example.mobappfrontend
 
+import android.content.Context
 import android.content.Intent
 //import android.media.Image
 import android.net.Uri
@@ -37,6 +38,9 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import coil.compose.rememberAsyncImagePainter
+import kotlinx.serialization.Serializable
+import kotlinx.serialization.decodeFromString
+import kotlinx.serialization.json.Json
 
 
 data class JsonObject(val id: Int, val data: String)
@@ -58,12 +62,23 @@ val jsonData = mutableStateListOf(
     // ... add more JSON objects as needed
 )
 
-
+var showContainer: ShowContainer? = null;
 //------------->>>------------->>> Main
 class MainActivity : ComponentActivity() { //ComponentActivity() or AppCompatActivity() ??
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
+            /*
+            parse(this)
+            if (showContainer != null) {
+                for (show in showContainer!!.items) {
+                    println("Title: ${show.title}")
+                    println("Web link: ${show.links.web}")
+                    /*for (image in show.images) {
+                            println("Image URL: ${image.url}")
+                        }*/
+                }
+            }*/
             AppContent()
         }
     }
@@ -312,7 +327,35 @@ data class Topiccard(
     val url: String,
     val img: String
 )
+@Serializable
+data class Image(
+    val url: String
+)
 
+@Serializable
+data class Show(
+    val title: String,
+    val links: Links,
+    val images: List<Image>,
+    val keywords: List<String>
+)
+
+@Serializable
+data class Links(
+    val web: String
+)
+
+@Serializable
+data class ShowContainer(
+    val items: List<Show>
+)
+
+// Parse through the json file and safe shows in global
+fun parse(context: Context) {
+    val inputStream = context.resources.openRawResource(R.raw.filtered_shows)
+    val jsonString = inputStream.bufferedReader().use { it.readText() }
+    showContainer = Json { ignoreUnknownKeys = true }.decodeFromString<ShowContainer>(jsonString)
+}
 
 
 //TODO: scrollable list (infinite scroll ?)
