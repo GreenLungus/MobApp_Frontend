@@ -27,15 +27,15 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.LocationOn
-import androidx.compose.material.icons.rounded.ShoppingCart
+//import androidx.compose.material.icons.rounded.ShoppingCart
 import androidx.compose.material3.FilledTonalIconButton
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.modifier.modifierLocalConsumer
+//import androidx.compose.ui.modifier.modifierLocalConsumer
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.res.stringResource
+//import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import coil.compose.rememberAsyncImagePainter
 import kotlinx.serialization.Serializable
@@ -180,7 +180,7 @@ fun TopSection() {
                         .align(Alignment.CenterHorizontally)
                 ) {
                     FilledTonalIconButton(
-                        shape = RoundedCornerShape(8.dp),
+                        shape = RoundedCornerShape(15.dp),
                         onClick = { /*TODO: get location, send to backend*/ })
                     {
                         Icon(
