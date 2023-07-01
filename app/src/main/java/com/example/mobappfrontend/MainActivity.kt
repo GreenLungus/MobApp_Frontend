@@ -68,17 +68,18 @@ class MainActivity : ComponentActivity() { //ComponentActivity() or AppCompatAct
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
-            /*
+
             parse(this)
             if (showContainer != null) {
                 for (show in showContainer!!.items) {
                     println("Title: ${show.title}")
                     println("Web link: ${show.links.web}")
-                    /*for (image in show.images) {
+                    for (image in show.images) {
                             println("Image URL: ${image.url}")
-                        }*/
+                        }
                 }
-            }*/
+            }
+
             AppContent()
         }
     }
@@ -116,7 +117,7 @@ fun AppContent() {
             ) {
                 // Content for the second row
                 LazyColumnTopics()
-                //TopicCards()//liste ubergeben mit geparstem json
+
             }
             //Bottomsection
             Row(
