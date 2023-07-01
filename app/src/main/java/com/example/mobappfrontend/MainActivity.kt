@@ -153,10 +153,10 @@ fun TopSection() {
                 // Content for the first column
                 Row(modifier = Modifier
                     .fillMaxSize()
-                    .weight(0.8f)){ }
+                    .weight(0.5f)){ }
                 Row(modifier = Modifier
                     .fillMaxSize()
-                    .weight(2f)){ DropdownCitiesSelectable() }
+                    .weight(2.3f)){ DropdownCitiesSelectable() }
                 //Row(modifier = Modifier.fillMaxSize().weight(1f)){ }
             }
             //Button for Dropdownmenu Request submit
@@ -210,6 +210,8 @@ fun DropdownCitiesSelectable() {
 
     // box
     ExposedDropdownMenuBox(
+        modifier = Modifier
+            .clip(RoundedCornerShape(13.dp)),
         expanded = expandstate,
         onExpandedChange = {
             expandstate  = !expandstate
