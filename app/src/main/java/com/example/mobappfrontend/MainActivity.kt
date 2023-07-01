@@ -34,17 +34,16 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import coil.compose.rememberAsyncImagePainter
-import io.ktor.client.HttpClient
-import io.ktor.client.engine.android.Android
-import io.ktor.client.features.get
-import io.ktor.client.features.json.JsonFeature
+//import io.ktor.client.HttpClient
+//import io.ktor.client.engine.android.Android
+//import io.ktor.client.features.get
+//import io.ktor.client.features.json.JsonFeature
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.decodeFromString
 import kotlinx.serialization.json.Json
-import io.ktor.client.features.json.serializer.*
-import io.ktor.client.request.get
+//import io.ktor.client.features.json.serializer.*
+//import io.ktor.client.request.get
 import kotlinx.coroutines.runBlocking
-import java.io.File
 
 //-----------------COLORS-----------------<<<<<<<<
 //for dropdown spinner background
@@ -58,7 +57,7 @@ val cities = listOf(
     "Hannover", "Düsseldorf", "Mainz", "Saarbrücken", "Dresden", "Magdeburg", "Kiel", "Erfurt"
 )
 
-//-----------------LazyColumn Dataclass-----------------<<<<<<<<
+//-----------------LazyColumn  inhouse Dataclass-----------------<<<<<<<<
 data class Topiccard(
     val title: String,
     val url: String,
@@ -66,12 +65,11 @@ data class Topiccard(
 )
 
 //liste aus Json datensatz generieren und an datenklasse übergeben, diese datenklassen als liste an lazycolumn übergeben
-val topicCardsList :MutableList<Topiccard> = mutableListOf(
+val topicCardsList :MutableList<Topiccard> = mutableListOf()
     /*Topiccard("So sicher wie Fort Knox (128)", "https://www.ardmediathek.de/video/ODFlZmExYzUtZWJlMy00YTA2LWFlOTQtNTU3MTg1ZGRiODVk", "https://api.ardmediathek.de/image-service/image-collections/urn:ard:image-collection:1349ca4a85ad8334/16x9?imwidth=1920&w=1920"),
       Topiccard("Tatort: Hinter dem Spiegel", "https://www.ardmediathek.de/video/Y3JpZDovL3N3ci5kZS9hZXgvbzE4MDA0MzU", "https://api.ardmediathek.de/image-service/image-collections/urn:ard:image-collection:a29af08618b987d8/16x9?imwidth=1920&w=1920"),
       Topiccard("Das letzte Rennen", "https://www.ardmediathek.de/video/Y3JpZDovL3N3ci5kZS9hZXgvbzE3NDYzODU", "https://api.ardmediathek.de/image-service/image-collections/urn:ard:image-collection:a8ce3a563082adae/16x9?imwidth=1920&w=1920")
      */
-)
 
 
 //-----------------Parser Dataclasses-----------------<<<<<<<<
@@ -89,6 +87,8 @@ data class ShowContainer(
     val items: List<Show>
 )
 
+
+
 //------------->>>------------->>> Main
 class MainActivity : ComponentActivity() { //ComponentActivity() or AppCompatActivity() ??
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -100,6 +100,7 @@ class MainActivity : ComponentActivity() { //ComponentActivity() or AppCompatAct
                 for (show in showContainer!!.items) {
                     println("Title: ${show.title}")
                     println("Web link: ${show.webLink}")
+                    println("Img link: ${show.imageUrl}")
                     topicCardsList.add(Topiccard(show.title, show.webLink, show.imageUrl))
                 }
             }
@@ -109,8 +110,9 @@ class MainActivity : ComponentActivity() { //ComponentActivity() or AppCompatAct
     }
 }
 
-//---------------->>> Composables
-//@Preview(showBackground = true) //show preview
+//---------------->
+//-------------------------------->>> Composables
+//---------------->
 
 //TODO: Preview renderer
 @Preview
@@ -150,8 +152,6 @@ fun AppContent() {
                     .weight(0.4f)
                     .fillMaxWidth()
                     .background(Color.Blue)
-                    //.padding(40.dp)
-                    //.clip(shape = RoundedCornerShape(20.dp))
 
             ) {
                 // Content for the third row
@@ -286,7 +286,7 @@ fun DropdownCitiesSelectable() {
 
 //TODO: Content cards
 @Composable
-fun TopicCards(topic: Topiccard) {
+fun TopicCardsTemplate(topic: Topiccard) {
     //should get the title, url and img source in single form or as json obj
     Card(
         elevation = 5.dp,
@@ -335,52 +335,13 @@ fun TopicCards(topic: Topiccard) {
     }
 }
 
-//TODO: Backend request
-suspend fun beRequestMan(dbitem: String) {
-    // Erstellen Sie einen neuen HTTP-Client
-    val client = HttpClient {
-        install(JsonFeature) {
-            serializer = KotlinxSerializer(Json {
-                prettyPrint = true
-                isLenient = true
-                ignoreUnknownKeys = true
-            })
-        }
-    }
-
-    // Senden Sie eine GET-Anfrage an den Backend-Server
-    val url = "http://127.0.0.1:8080/$dbitem"
-    val response: String = client.get(url)
-
-    // Schreibt die Antwort in eine JSON-Datei
-    File("src/main/resources/raw/filtered_shows.json").writeText(response)
-
-    // Schließen Sie den HTTP-Client
-    client.close()
-}
-
-//Kotlin data class that represents the structure of the JSON object.
-//Make sure the property names in the Kotlin class match the keys in the JSON object.
-//1. get object and read into an string
-//2. count rows? words? to determine where the index is and an object starts
-//3. deserialize using gson and write into datac lass and add data class object to list
-//4. use data class list to fill list on main screen
-/*TODO: convert Json object to kotlin data class*/
-//Parse through the json file and safe shows in global
-fun parse(context: Context) {
-    val inputStream = context.resources.openRawResource(R.raw.filtered_shows)
-    val jsonString = inputStream.bufferedReader().use { it.readText() }
-    showContainer = Json { ignoreUnknownKeys = true }.decodeFromString<ShowContainer>(jsonString)
-}
-
-
-//TODO: scrollable list (infinite scroll ?)
+//TODO: scrollable list
 //https://medium.com/@mal7othify/lists-using-lazycolumn-in-jetpack-compose-c70c39805fbc
 @Composable
 fun LazyColumnTopics() {
     LazyColumn {
         items(topicCardsList) {
-            TopicCards(topic = it)
+            TopicCardsTemplate(topic = it)
         }
     }
 }
@@ -397,7 +358,46 @@ fun OpenLinkButton(link: String) {
             context.startActivity(intent)
         }
     ) {
-            Text(text = " Jetzt anschauen!")
+            Text(text = "Jetzt anschauen!")
     }
 }
 
+//---------------->
+//-------------------------------->>> Non - Composables
+//---------------->
+
+//TODO: Backend request
+suspend fun beRequestMan(dbitem: String) {
+    /*
+       // Erstellen Sie einen neuen HTTP-Client
+       val client = HttpClient {
+           install(JsonFeature) {
+               serializer = KotlinxSerializer(Json {
+                   prettyPrint = true
+                   isLenient = true
+                   ignoreUnknownKeys = true
+               })
+           }
+       }
+
+       // Senden Sie eine GET-Anfrage an den Backend-Server
+       val url = "http://127.0.0.1:8080/$dbitem"
+       val response: String = client.get(url)
+
+       // Schreibt die Antwort in eine JSON-Datei
+       File("src/main/resources/raw/filtered_shows.json").writeText(response)
+
+       // Schließen Sie den HTTP-Client
+       client.close()
+
+    */
+}
+
+
+/*TODO: convert Json object to kotlin data class*/
+//Parse through the json file and safe shows in global
+fun parse(context: Context) {
+    val inputStream = context.resources.openRawResource(R.raw.filtered_shows)
+    val jsonString = inputStream.bufferedReader().use { it.readText() }
+    showContainer = Json { ignoreUnknownKeys = true }.decodeFromString<ShowContainer>(jsonString)
+}
