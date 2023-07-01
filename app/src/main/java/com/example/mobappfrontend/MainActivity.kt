@@ -45,12 +45,11 @@ val customColor1 = Color.hsl(228F, 0.6F,0.6F,1f, ColorSpaces.Srgb)
 //for middle section background
 val customColor2 = Color.hsl(226F, 0.4F,0.7F,1f, ColorSpaces.Srgb)
 
+//-----------------Dropdown selectables-----------------<<<<<<<<
 val cities = listOf(
     "Stuttgart", "München", "Berlin", "Potsdam", "Bremen", "Hamburg", "Wiesbaden", "Schwerin",
     "Hannover", "Düsseldorf", "Mainz", "Saarbrücken", "Dresden", "Magdeburg", "Kiel", "Erfurt"
 )
-
-var showContainer: ShowContainer? = null;
 
 //-----------------LazyColumn Dataclass-----------------<<<<<<<<
 data class Topiccard(
@@ -61,23 +60,15 @@ data class Topiccard(
 
 //liste aus Json datensatz generieren und an datenklasse übergeben, diese datenklassen als liste an lazycolumn übergeben
 val topicCardsList :MutableList<Topiccard> = mutableListOf(
-    /*
-        Topiccard("So sicher wie Fort Knox (128)", "https://www.ardmediathek.de/video/ODFlZmExYzUtZWJlMy00YTA2LWFlOTQtNTU3MTg1ZGRiODVk", "https://api.ardmediathek.de/image-service/image-collections/urn:ard:image-collection:1349ca4a85ad8334/16x9?imwidth=1920&w=1920"),
-        Topiccard("Tatort: Hinter dem Spiegel", "https://www.ardmediathek.de/video/Y3JpZDovL3N3ci5kZS9hZXgvbzE4MDA0MzU", "https://api.ardmediathek.de/image-service/image-collections/urn:ard:image-collection:a29af08618b987d8/16x9?imwidth=1920&w=1920"),
-        Topiccard("Das letzte Rennen", "https://www.ardmediathek.de/video/Y3JpZDovL3N3ci5kZS9hZXgvbzE3NDYzODU", "https://api.ardmediathek.de/image-service/image-collections/urn:ard:image-collection:a8ce3a563082adae/16x9?imwidth=1920&w=1920"),
-        Topiccard("So sicher wie Fort Knox (128)", "https://www.ardmediathek.de/video/ODFlZmExYzUtZWJlMy00YTA2LWFlOTQtNTU3MTg1ZGRiODVk", "https://api.ardmediathek.de/image-service/image-collections/urn:ard:image-collection:1349ca4a85ad8334/16x9?imwidth=1920&w=1920"),
-        Topiccard("Tatort: Hinter dem Spiegel", "https://www.ardmediathek.de/video/Y3JpZDovL3N3ci5kZS9hZXgvbzE4MDA0MzU", "https://api.ardmediathek.de/image-service/image-collections/urn:ard:image-collection:a29af08618b987d8/16x9?imwidth=1920&w=1920"),
-        Topiccard("Das letzte Rennen", "https://www.ardmediathek.de/video/Y3JpZDovL3N3ci5kZS9hZXgvbzE3NDYzODU", "https://api.ardmediathek.de/image-service/image-collections/urn:ard:image-collection:a8ce3a563082adae/16x9?imwidth=1920&w=1920"),
-        Topiccard("So sicher wie Fort Knox (128)", "https://www.ardmediathek.de/video/ODFlZmExYzUtZWJlMy00YTA2LWFlOTQtNTU3MTg1ZGRiODVk", "https://api.ardmediathek.de/image-service/image-collections/urn:ard:image-collection:1349ca4a85ad8334/16x9?imwidth=1920&w=1920"),
-        Topiccard("Tatort: Hinter dem Spiegel", "https://www.ardmediathek.de/video/Y3JpZDovL3N3ci5kZS9hZXgvbzE4MDA0MzU", "https://api.ardmediathek.de/image-service/image-collections/urn:ard:image-collection:a29af08618b987d8/16x9?imwidth=1920&w=1920"),
-        Topiccard("Das letzte Rennen", "https://www.ardmediathek.de/video/Y3JpZDovL3N3ci5kZS9hZXgvbzE3NDYzODU", "https://api.ardmediathek.de/image-service/image-collections/urn:ard:image-collection:a8ce3a563082adae/16x9?imwidth=1920&w=1920"),
-        Topiccard("So sicher wie Fort Knox (128)", "https://www.ardmediathek.de/video/ODFlZmExYzUtZWJlMy00YTA2LWFlOTQtNTU3MTg1ZGRiODVk", "https://api.ardmediathek.de/image-service/image-collections/urn:ard:image-collection:1349ca4a85ad8334/16x9?imwidth=1920&w=1920"),
-        Topiccard("Tatort: Hinter dem Spiegel", "https://www.ardmediathek.de/video/Y3JpZDovL3N3ci5kZS9hZXgvbzE4MDA0MzU", "https://api.ardmediathek.de/image-service/image-collections/urn:ard:image-collection:a29af08618b987d8/16x9?imwidth=1920&w=1920"),
-        Topiccard("Das letzte Rennen", "https://www.ardmediathek.de/video/Y3JpZDovL3N3ci5kZS9hZXgvbzE3NDYzODU", "https://api.ardmediathek.de/image-service/image-collections/urn:ard:image-collection:a8ce3a563082adae/16x9?imwidth=1920&w=1920")
-    */
+    /*Topiccard("So sicher wie Fort Knox (128)", "https://www.ardmediathek.de/video/ODFlZmExYzUtZWJlMy00YTA2LWFlOTQtNTU3MTg1ZGRiODVk", "https://api.ardmediathek.de/image-service/image-collections/urn:ard:image-collection:1349ca4a85ad8334/16x9?imwidth=1920&w=1920"),
+      Topiccard("Tatort: Hinter dem Spiegel", "https://www.ardmediathek.de/video/Y3JpZDovL3N3ci5kZS9hZXgvbzE4MDA0MzU", "https://api.ardmediathek.de/image-service/image-collections/urn:ard:image-collection:a29af08618b987d8/16x9?imwidth=1920&w=1920"),
+      Topiccard("Das letzte Rennen", "https://www.ardmediathek.de/video/Y3JpZDovL3N3ci5kZS9hZXgvbzE3NDYzODU", "https://api.ardmediathek.de/image-service/image-collections/urn:ard:image-collection:a8ce3a563082adae/16x9?imwidth=1920&w=1920")
+     */
 )
 
+
 //-----------------Parser Dataclasses-----------------<<<<<<<<
+var showContainer: ShowContainer? = null;
 
 @Serializable
 data class Show(
