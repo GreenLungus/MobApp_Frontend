@@ -78,30 +78,18 @@ val topicCardsList :MutableList<Topiccard> = mutableListOf(
 )
 
 //-----------------Parser Dataclasses-----------------<<<<<<<<
-@Serializable
-data class Image(
-    val url: String
-)
 
 @Serializable
 data class Show(
     val title: String,
-    val links: Links,
-    val images: List<Image>,
-    val keywords: List<String>
-)
-
-@Serializable
-data class Links(
-    val web: String
+    val webLink: String,
+    val imageUrl: String,
 )
 
 @Serializable
 data class ShowContainer(
     val items: List<Show>
 )
-
-
 
 //------------->>>------------->>> Main
 class MainActivity : ComponentActivity() { //ComponentActivity() or AppCompatActivity() ??
@@ -113,13 +101,8 @@ class MainActivity : ComponentActivity() { //ComponentActivity() or AppCompatAct
             if (showContainer != null) {
                 for (show in showContainer!!.items) {
                     println("Title: ${show.title}")
-                    println("Web link: ${show.links.web}")
-
-                    for (image in show.images) {
-                        println("Image URL: ${image.url}")
-                        topicCardsList.add(Topiccard(show.title, show.links.web, image.url))
-
-                    }
+                    println("Web link: ${show.webLink}")
+                    topicCardsList.add(Topiccard(show.title, show.webLink, show.imageUrl))
                 }
             }
 
