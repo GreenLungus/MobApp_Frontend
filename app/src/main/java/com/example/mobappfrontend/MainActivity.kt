@@ -34,10 +34,17 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import coil.compose.rememberAsyncImagePainter
+import io.ktor.client.HttpClient
+import io.ktor.client.engine.android.Android
+import io.ktor.client.features.get
+import io.ktor.client.features.json.JsonFeature
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.decodeFromString
 import kotlinx.serialization.json.Json
-
+import io.ktor.client.features.json.serializer.*
+import io.ktor.client.request.get
+import kotlinx.coroutines.runBlocking
+import java.io.File
 
 //-----------------COLORS-----------------<<<<<<<<
 //for dropdown spinner background
@@ -68,7 +75,7 @@ val topicCardsList :MutableList<Topiccard> = mutableListOf(
 
 
 //-----------------Parser Dataclasses-----------------<<<<<<<<
-var showContainer: ShowContainer? = null;
+var showContainer: ShowContainer? = null
 
 @Serializable
 data class Show(
@@ -266,8 +273,10 @@ fun DropdownCitiesSelectable() {
                     //on click Dropdown
                     selectedItem = selectedOption
                     expandstate = false
-                    beRequestMan(selectedItem) // <<---- BE Request with selected item, could be get erlaier as default
-                }) {
+                    runBlocking {
+                        beRequestMan(selectedItem) // <<---- BE Request with selected item, could be get erlaier as default
+                    }
+                    }) {
                     Text(text = selectedOption) //text in dropdown rows for each city
                 }
             }
@@ -327,9 +336,27 @@ fun TopicCards(topic: Topiccard) {
 }
 
 //TODO: Backend request
-fun beRequestMan(dbitem: String) {
-    println("$dbitem")
-    //Here follows the backend request for manual selection
+suspend fun beRequestMan(dbitem: String) {
+    // Erstellen Sie einen neuen HTTP-Client
+    val client = HttpClient {
+        install(JsonFeature) {
+            serializer = KotlinxSerializer(Json {
+                prettyPrint = true
+                isLenient = true
+                ignoreUnknownKeys = true
+            })
+        }
+    }
+
+    // Senden Sie eine GET-Anfrage an den Backend-Server
+    val url = "http://127.0.0.1:8080/$dbitem"
+    val response: String = client.get(url)
+
+    // Schreibt die Antwort in eine JSON-Datei
+    File("src/main/resources/raw/filtered_shows.json").writeText(response)
+
+    // Schließen Sie den HTTP-Client
+    client.close()
 }
 
 //Kotlin data class that represents the structure of the JSON object.

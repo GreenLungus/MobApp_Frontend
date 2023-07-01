@@ -90,7 +90,10 @@ dependencies {
     implementation "io.coil-kt:coil-compose:2.4.0"
     implementation "io.coil-kt:coil-svg:2.4.0"
 
+    implementation("io.ktor:ktor-client-serialization:1.6.3")
     implementation "org.jetbrains.kotlinx:kotlinx-serialization-json:1.5.0"
+    implementation 'io.ktor:ktor-client-android:1.6.7'
+    implementation 'io.ktor:ktor-client-json:1.6.7'
 
     //added from video: https://www.youtube.com/watch?v=qsUHeg-acJU
     //implementation "androidx.compose.compiler:compiler:1.4.7"
