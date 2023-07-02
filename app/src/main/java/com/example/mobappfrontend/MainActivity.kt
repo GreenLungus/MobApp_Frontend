@@ -34,6 +34,9 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.tooling.preview.Wallpaper
+import androidx.compose.ui.tooling.preview.Wallpapers
 import coil.compose.rememberAsyncImagePainter
 import io.ktor.client.HttpClient
 import io.ktor.client.features.json.JsonFeature
@@ -95,13 +98,17 @@ class MainActivity : ComponentActivity() { //ComponentActivity() or AppCompatAct
     }
 }
 
-//---------------->>> Composables
+//---------------->>>
+//-------------------------------->>> Composables
+//---------------->>>
 //TODO: Preview renderer
-/*@Preview
-@Composable
+/*@Composable
+@Preview
 fun ThreeColumnScreenPreview() {
-    AppContent(this)
-}*/
+    AppContent()
+}
+*/
+
 
 //TODO: base app layout
 @Composable
@@ -172,7 +179,6 @@ fun TopSection(context: Context) {
                     .fillMaxSize()
                     .weight(2.3f)){ DropdownCitiesSelectable(context) }
             }
-            //Button for Dropdownmenu Request submit
             Column(
                 modifier = Modifier
                     .weight(1f)
@@ -318,6 +324,37 @@ fun TopicCards(topic: Topiccard) {
     }
 }
 
+//TODO: scrollable list (infinite scroll ?)
+@Composable
+fun LazyColumnTopics() {
+    topicCardsList = remember { mutableStateListOf<Topiccard>() }
+    LazyColumn {
+        items(topicCardsList) {
+            TopicCards(topic = it)
+        }
+    }
+}
+
+//TODO: hyperlink button
+@Composable
+fun OpenLinkButton(link: String) {
+    val context = LocalContext.current
+    Button(
+        shape = RoundedCornerShape(15.dp),
+        onClick = {
+            //öffnet systembrowser mittels übergebener URL
+            val intent = Intent(Intent.ACTION_VIEW, Uri.parse(link))
+            context.startActivity(intent)
+        }
+    ) {
+        Text(text = " Jetzt anschauen!")
+    }
+}
+
+//---------------->>>
+//-------------------------------->>> Non - Composables
+//---------------->>>
+
 //TODO: Backend request
 suspend fun beRequestMan(context: Context, dbitem: String) {
     // Erstellen Sie einen neuen HTTP-Client
@@ -361,33 +398,5 @@ fun parse(context: Context) {
         println("Title: ${show.title}")
         println("Web link: ${show.webLink}")
         topicCardsList.add(Topiccard(show.title, show.webLink, show.imageUrl))
-    }
-}
-
-
-//TODO: scrollable list (infinite scroll ?)
-@Composable
-fun LazyColumnTopics() {
-    topicCardsList = remember { mutableStateListOf<Topiccard>() }
-    LazyColumn {
-        items(topicCardsList) {
-            TopicCards(topic = it)
-        }
-    }
-}
-
-//TODO: hyperlink button
-@Composable
-fun OpenLinkButton(link: String) {
-    val context = LocalContext.current
-    Button(
-        shape = RoundedCornerShape(15.dp),
-        onClick = {
-            //öffnet systembrowser mittels übergebener URL
-            val intent = Intent(Intent.ACTION_VIEW, Uri.parse(link))
-            context.startActivity(intent)
-        }
-    ) {
-        Text(text = " Jetzt anschauen!")
     }
 }
