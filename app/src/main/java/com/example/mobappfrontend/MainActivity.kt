@@ -9,6 +9,7 @@ import androidx.activity.compose.setContent
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.hoverable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -18,7 +19,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.colorspace.ColorSpaces
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.foundation.layout.Column
@@ -28,31 +28,31 @@ import androidx.compose.material.icons.outlined.LocationOn
 import androidx.compose.material3.FilledTonalIconButton
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
-import androidx.lifecycle.lifecycleScope
 import coil.compose.rememberAsyncImagePainter
 import io.ktor.client.HttpClient
-import io.ktor.client.engine.android.Android
-import io.ktor.client.features.get
 import io.ktor.client.features.json.JsonFeature
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.decodeFromString
 import kotlinx.serialization.json.Json
 import io.ktor.client.features.json.serializer.*
 import io.ktor.client.request.get
-import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
-import java.io.File
+
 
 //-----------------COLORS-----------------<<<<<<<<
 //for dropdown spinner background
 val customColor1 = Color.hsl(228F, 0.6F,0.6F,1f, ColorSpaces.Srgb)
 //for middle section background
 val customColor2 = Color.hsl(226F, 0.4F,0.7F,1f, ColorSpaces.Srgb)
+//for ARD logo
+val customColor3 = Color.hsl(180F, 0.6F,0.7F,1f, ColorSpaces.Srgb)
 
 //-----------------Dropdown selectables-----------------<<<<<<<<
 val cities = listOf(
@@ -68,7 +68,6 @@ data class Topiccard(
 )
 
 //liste aus Json datensatz generieren und an datenklasse übergeben, diese datenklassen als liste an lazycolumn übergeben
-
 var topicCardsList :MutableList<Topiccard> = mutableListOf()
 
 
@@ -98,8 +97,6 @@ class MainActivity : ComponentActivity() { //ComponentActivity() or AppCompatAct
 }
 
 //---------------->>> Composables
-//@Preview(showBackground = true) //show preview
-
 //TODO: Preview renderer
 /*@Preview
 @Composable
@@ -129,20 +126,26 @@ fun AppContent(context: Context) {
             ) {
                 // Content for the second row
                 LazyColumnTopics()
-
             }
             //Bottomsection
             Row(
-
                 modifier = Modifier
                     .weight(0.4f)
                     .fillMaxWidth()
-                    .background(Color.Blue)
-                //.padding(40.dp)
-                //.clip(shape = RoundedCornerShape(20.dp))
-
+                    .background(Color.Blue),
+                horizontalArrangement = Arrangement.Center
             ) {
                 // Content for the third row
+                Box(
+                    modifier = Modifier
+                ) {
+                    val image = painterResource(id = R.drawable.ard_logo)
+                    Image(
+                        painter = image,
+                        contentDescription = null,
+                        colorFilter = ColorFilter.tint(color = customColor3)
+                    )
+                }
             }
         }
     }
@@ -157,7 +160,6 @@ fun TopSection(context: Context) {
             Column(modifier = Modifier
                 .weight(0.1f)
                 .fillMaxHeight()) { }
-
             Column(
                 modifier = Modifier
                     .weight(2f)
@@ -170,7 +172,6 @@ fun TopSection(context: Context) {
                 Row(modifier = Modifier
                     .fillMaxSize()
                     .weight(2.3f)){ DropdownCitiesSelectable(context) }
-                //Row(modifier = Modifier.fillMaxSize().weight(1f)){ }
             }
             //Button for Dropdownmenu Request submit
             Column(
@@ -215,12 +216,10 @@ fun DropdownCitiesSelectable(context: Context) {
     var expandstate by remember {
         mutableStateOf(false)
     }
-
     // remember the selected item and use first in list as default
     var selectedItem by remember {
         mutableStateOf(cities[0])
     }
-
     // box
     ExposedDropdownMenuBox(
         modifier = Modifier
@@ -229,7 +228,6 @@ fun DropdownCitiesSelectable(context: Context) {
         onExpandedChange = {
             expandstate  = !expandstate
         }
-
     ) {
         // text field
         TextField(
@@ -248,7 +246,6 @@ fun DropdownCitiesSelectable(context: Context) {
                 backgroundColor = customColor1
             )
         )
-
         // menu
         ExposedDropdownMenu(
             expanded = expandstate,
@@ -314,7 +311,6 @@ fun TopicCards(topic: Topiccard) {
                     fontWeight = FontWeight.Bold,
                     color = Color.White,
                     fontSize = 17.sp
-
                 )
                 OpenLinkButton(link = topic.url)
             }
@@ -350,12 +346,7 @@ suspend fun beRequestMan(context: Context, dbitem: String) {
     client.close()
 }
 
-//Kotlin data class that represents the structure of the JSON object.
-//Make sure the property names in the Kotlin class match the keys in the JSON object.
-//1. get object and read into an string
-//2. count rows? words? to determine where the index is and an object starts
-//3. deserialize using gson and write into datac lass and add data class object to list
-//4. use data class list to fill list on main screen
+
 /*TODO: convert Json object to kotlin data class*/
 //Parse through the json file and safe shows in global
 fun parse(context: Context) {
@@ -402,4 +393,3 @@ fun OpenLinkButton(link: String) {
         Text(text = " Jetzt anschauen!")
     }
 }
-
