@@ -9,7 +9,6 @@ import androidx.activity.compose.setContent
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
-import androidx.compose.foundation.hoverable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -367,7 +366,6 @@ fun parse(context: Context) {
 
 
 //TODO: scrollable list (infinite scroll ?)
-//https://medium.com/@mal7othify/lists-using-lazycolumn-in-jetpack-compose-c70c39805fbc
 @Composable
 fun LazyColumnTopics() {
     topicCardsList = remember { mutableStateListOf<Topiccard>() }
