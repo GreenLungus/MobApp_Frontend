@@ -62,6 +62,7 @@ dependencies {
     implementation 'androidx.compose.material3:material3'
     implementation 'androidx.compose.material:material:1.0.4'
     implementation 'androidx.compose.compiler:compiler:1.0.4'
+    implementation "androidx.compose.runtime:runtime-livedata"
     // Android Studio Preview support
     debugImplementation 'androidx.compose.ui:ui-tooling'
     implementation 'androidx.compose.ui:ui-tooling-preview'
@@ -90,9 +91,13 @@ dependencies {
     implementation "io.coil-kt:coil-compose:2.4.0"
     implementation "io.coil-kt:coil-svg:2.4.0"
 
+    // Client connection
     implementation("io.ktor:ktor-client-serialization:1.6.3")
     implementation "org.jetbrains.kotlinx:kotlinx-serialization-json:1.5.0"
     implementation 'io.ktor:ktor-client-android:1.6.7'
     implementation 'io.ktor:ktor-client-json:1.6.7'
+
+    // Location
+    implementation 'com.google.android.gms:play-services-location:19.0.1'
 
 }
