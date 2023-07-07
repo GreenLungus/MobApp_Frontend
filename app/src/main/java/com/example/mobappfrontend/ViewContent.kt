@@ -2,7 +2,6 @@ package com.example.mobappfrontend
 
 import android.content.Context
 import android.content.Intent
-import android.content.pm.PackageManager
 import android.net.Uri
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
@@ -25,13 +24,9 @@ import androidx.compose.material.DropdownMenuItem
 import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material.ExposedDropdownMenuBox
 import androidx.compose.material.ExposedDropdownMenuDefaults
-import androidx.compose.material.Icon
 import androidx.compose.material.Surface
 import androidx.compose.material.Text
 import androidx.compose.material.TextField
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.outlined.LocationOn
-import androidx.compose.material3.FilledTonalIconButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateListOf
@@ -51,7 +46,6 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.core.content.ContextCompat
 import coil.compose.rememberAsyncImagePainter
 import kotlinx.coroutines.runBlocking
 
@@ -59,7 +53,7 @@ import kotlinx.coroutines.runBlocking
 //TODO: base app layout
 @Composable
 fun AppContent(context: Context) {
-    Surface(color = customColor2/*MaterialTheme.colors.background*/) {
+    Surface(color = customColor2) {
         Column(modifier = Modifier.fillMaxSize()) {
             //Topsection
             Row(
@@ -198,11 +192,11 @@ fun DropdownCitiesSelectable(context: Context) {
             cities.forEach { selectedOption ->
                 // menu item
                 DropdownMenuItem(onClick = {
-                    //on click Dropdown
+                    //on click Dropdown (for each city element in DD Menu)
                     selectedItem = selectedOption
                     expandstate = false
                     runBlocking {
-                        beRequestMan(context, selectedItem) // <<---- BE Request with selected item, could be get erlaier as default
+                        beRequestMan(context, selectedItem) // <<---- BE Request with selected city
                     }
                 }) {
                     Text(text = selectedOption) //text in dropdown rows for each city
@@ -215,7 +209,6 @@ fun DropdownCitiesSelectable(context: Context) {
 //TODO: Content cards
 @Composable
 fun TopicCards(topic: Topiccard) {
-    //should get the title, url and img source in single form or as json obj
     Card(
         elevation = 5.dp,
         backgroundColor = customColor1,
@@ -225,11 +218,14 @@ fun TopicCards(topic: Topiccard) {
             .padding(10.dp)
             .fillMaxWidth(1f)
     ) {
+
         Row(
             verticalAlignment = Alignment.CenterVertically,
             modifier = Modifier
                 .padding(5.dp)
         ) {
+
+            //topic image, used Coil to fetch image
             val image: Painter = rememberAsyncImagePainter(topic.img)
             Image(
                 modifier = Modifier
@@ -240,11 +236,11 @@ fun TopicCards(topic: Topiccard) {
                 contentDescription = "",
                 contentScale = ContentScale.Crop
             )
-            //URL and Title
+
+            //Title and Button with URL
             Column(
                 horizontalAlignment = Alignment.CenterHorizontally,
                 modifier = Modifier
-                    //.padding(5.dp)
                     .weight(2f)
             ) {
 
@@ -255,6 +251,7 @@ fun TopicCards(topic: Topiccard) {
                     color = Color.White,
                     fontSize = 17.sp
                 )
+
                 OpenLinkButton(link = topic.url)
             }
         }
@@ -280,7 +277,7 @@ fun OpenLinkButton(link: String) {
     Button(
         shape = RoundedCornerShape(15.dp),
         onClick = {
-            //öffnet systembrowser mittels übergebener URL
+            //opens system browser with var link: String(url)
             val intent = Intent(Intent.ACTION_VIEW, Uri.parse(link))
             context.startActivity(intent)
         }
