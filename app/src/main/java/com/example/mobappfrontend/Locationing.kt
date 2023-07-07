@@ -17,7 +17,6 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import androidx.core.content.ContextCompat
 import com.google.android.gms.location.LocationCallback
@@ -33,16 +32,19 @@ fun Locationing (context: Context) {
     var currentLocation by remember {
         mutableStateOf(LocationDetails(0.toDouble(), 0.toDouble()))
     }
+    //getting locationdata to print for debug
     currentLocationForPrint = currentLocation
 
+    // implemented as in documentation:
     //https://developer.android.com/training/location/retrieve-current#kotlin
     fusedLocationClient = LocationServices.getFusedLocationProviderClient(context)
+
     //https://developer.android.com/training/location/request-updates
     locationCallback = object : LocationCallback() {
-        override fun onLocationResult(p0: LocationResult) {
-            for (lo in p0.locations) {
+        override fun onLocationResult(locationResult: LocationResult) {
+            for (location in locationResult.locations) {
                 // Update UI with location data
-                currentLocation = LocationDetails(lo.latitude, lo.longitude)
+                currentLocation = LocationDetails(location.latitude, location.longitude)
             }
         }
     }
@@ -51,6 +53,8 @@ fun Locationing (context: Context) {
 
 @Composable
 fun LocationButton(context: Context) {
+
+    //Call Androids PermissionMap and Toasters for Access information
     val launcherMultiplePermissions = rememberLauncherForActivityResult(
         ActivityResultContracts.RequestMultiplePermissions()
     ) { permissionsMap ->
@@ -63,6 +67,8 @@ fun LocationButton(context: Context) {
             Toast.makeText(context, "Permission Denied", Toast.LENGTH_SHORT).show()
         }
     }
+
+    //Button with Location Icon
     FilledTonalIconButton(
         shape = RoundedCornerShape(15.dp),
         onClick = {
@@ -74,7 +80,8 @@ fun LocationButton(context: Context) {
                 }) {
                 // if access granted: Get the location
                 startLocationUpdates()
-            } else {
+            }
+            else {
                 launcherMultiplePermissions.launch(permissions)
             }
 
@@ -86,6 +93,24 @@ fun LocationButton(context: Context) {
         Icon(
             Icons.Outlined.LocationOn,
             contentDescription = "Location determination"
+        )
+    }
+}
+
+
+@SuppressLint("MissingPermission")
+fun startLocationUpdates() {
+    locationCallback?.let {
+        val locationRequest = LocationRequest.create().apply {
+            interval = 10000
+            fastestInterval = 5000
+            priority = LocationRequest.PRIORITY_HIGH_ACCURACY
+        }
+        //https://developer.android.com/training/location/request-updates
+        fusedLocationClient?.requestLocationUpdates(
+            locationRequest,
+            it,
+            Looper.getMainLooper()
         )
     }
 }

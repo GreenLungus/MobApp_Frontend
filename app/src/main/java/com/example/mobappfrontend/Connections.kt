@@ -10,7 +10,7 @@ import kotlinx.serialization.json.Json
 
 //TODO: Backend request
 suspend fun beRequestMan(context: Context, dbitem: String) {
-    // Erstellen Sie einen neuen HTTP-Client
+    // Creation of HTTP-Client
     val client = HttpClient {
         install(JsonFeature) {
             serializer = KotlinxSerializer(Json {
@@ -21,23 +21,23 @@ suspend fun beRequestMan(context: Context, dbitem: String) {
         }
     }
 
-    // Senden Sie eine GET-Anfrage an den Backend-Server
+    // Sending GET-Request to Backend-Server
     val url = "http://10.0.2.2:8080/$dbitem"
     val response: String = client.get(url)
 
-    // Schreibt die Antwort in eine JSON-Datei
+    // Writes response to json file and fills dataclass
     context.openFileOutput("filtered_shows.json", Context.MODE_PRIVATE).use {
         it.write(response.toByteArray())
     }
     parse(context)
 
-    // Schließen Sie den HTTP-Client
+    // close HTTP-Client
     client.close()
 }
 
 
 /*TODO: convert Json object to kotlin data class*/
-//Parse through the json file and safe shows in global
+//Separating and saveing json files to dataclass
 fun parse(context: Context) {
     val inputStream = context.openFileInput("filtered_shows.json")
     val jsonString = inputStream.bufferedReader().use { it.readText() }

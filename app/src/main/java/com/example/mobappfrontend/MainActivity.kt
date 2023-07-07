@@ -1,24 +1,14 @@
 package com.example.mobappfrontend
 
 import android.Manifest
-import android.annotation.SuppressLint
 import android.os.Bundle
-import android.os.Looper
-import android.widget.Toast
 import androidx.activity.ComponentActivity
-import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.compose.setContent
-import androidx.activity.result.contract.ActivityResultContracts
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.colorspace.ColorSpaces
-import androidx.compose.ui.platform.LocalContext
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationCallback
-import com.google.android.gms.location.LocationRequest
-import com.google.android.gms.location.LocationResult
-import com.google.android.gms.location.LocationServices
+
 
 
 //-----------------COLORS-----------------<<<<<<<<
@@ -35,11 +25,11 @@ val cities = listOf(
     "Hannover", "Düsseldorf", "Mainz", "Saarbrücken", "Dresden", "Magdeburg", "Kiel", "Erfurt"
 )
 
-//liste aus Json datensatz generieren und an datenklasse übergeben, diese datenklassen als liste an lazycolumn übergeben
+//-----------------List of data objects for Topiccards-----------------<<<<<<<<
 var topicCardsList :MutableList<Topiccard> = mutableListOf()
 
 
-//-----------------Parser-----------------<<<<<<<<
+//-----------------Container: Data Objects generated out of Json file-----------------<<<<<<<<
 var showContainer: ShowContainer? = null
 
 //-----------------Location-----------------<<<<<<<<
@@ -47,6 +37,7 @@ var locationCallback: LocationCallback? = null
 var fusedLocationClient: FusedLocationProviderClient? = null
 var locationRequired = false
 
+// array of all needed permissions to check with
 val permissions = arrayOf(
     Manifest.permission.ACCESS_COARSE_LOCATION,
     Manifest.permission.ACCESS_FINE_LOCATION
@@ -90,21 +81,4 @@ fun ThreeColumnScreenPreview() {
     AppContent()
 }
 */
-
-@SuppressLint("MissingPermission")
-fun startLocationUpdates() {
-    locationCallback?.let {
-        val locationRequest = LocationRequest.create().apply {
-            interval = 10000
-            fastestInterval = 5000
-            priority = LocationRequest.PRIORITY_HIGH_ACCURACY
-        }
-        //https://developer.android.com/training/location/request-updates
-        fusedLocationClient?.requestLocationUpdates(
-            locationRequest,
-            it,
-            Looper.getMainLooper()
-        )
-    }
-}
 
