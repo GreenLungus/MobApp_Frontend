@@ -62,19 +62,17 @@ class MainActivity : ComponentActivity() {
         }
     }
 
-    /*
+    //https://developer.android.com/training/location/request-updates
+    //stops location service and resumes when app is left and resumed
     override fun onResume() {
         super.onResume()
-        if (locationRequired) {
-            startLocationUpdates()
-        }
+        if (locationRequired) { startLocationUpdates() }
     }
-
     override fun onPause() {
         super.onPause()
         locationCallback?.let { fusedLocationClient?.removeLocationUpdates(it) }
     }
-     */
+
 }
 
 
