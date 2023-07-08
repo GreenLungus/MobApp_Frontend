@@ -56,7 +56,7 @@ fun Locationing (context: Context) {
 @Composable
 fun LocationButton(context: Context) {
 
-    //Call Androids PermissionMap and Toasters for Access information
+    //Call Androids PermissionPopup and Toasters for Access information
     val launcherMultiplePermissions = rememberLauncherForActivityResult(
         ActivityResultContracts.RequestMultiplePermissions()
     ) { permissionsMap ->
