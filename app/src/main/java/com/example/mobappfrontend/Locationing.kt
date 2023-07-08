@@ -25,6 +25,7 @@ import com.google.android.gms.location.LocationResult
 import com.google.android.gms.location.LocationServices
 
 
+//Based on this example: https://www.howtodoandroid.com/get-the-current-location-on-jetpack-compose/
 
 @Composable
 fun Locationing (context: Context) {

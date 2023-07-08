@@ -62,6 +62,7 @@ class MainActivity : ComponentActivity() {
         }
     }
 
+    /*
     override fun onResume() {
         super.onResume()
         if (locationRequired) {
@@ -73,6 +74,7 @@ class MainActivity : ComponentActivity() {
         super.onPause()
         locationCallback?.let { fusedLocationClient?.removeLocationUpdates(it) }
     }
+     */
 }
 
 

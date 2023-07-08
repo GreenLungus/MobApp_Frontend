@@ -22,7 +22,7 @@ suspend fun beRequestMan(context: Context, dbitem: String) {
 
     // Sending GET-Request to Backend-Server
     val url = "http://10.0.2.2:8080/$dbitem"
-    val response: String = client.get(url)
+    val response: String = client.get(url) //TODO: catch crshing with try and catch
 
     // Writes response to json file and fills dataclass
     context.openFileOutput("filtered_shows.json", Context.MODE_PRIVATE).use {
