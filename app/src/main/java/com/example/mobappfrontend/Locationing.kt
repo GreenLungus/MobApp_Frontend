@@ -66,10 +66,10 @@ fun LocationButton(context: Context) {
             locationRequired = true
             startLocationUpdates()
 
-            Toast.makeText(context, "Permission Granted", Toast.LENGTH_LONG).show()
+            Toast.makeText(context, "Standort freigegeben", Toast.LENGTH_LONG).show()
 
         } else {
-            Toast.makeText(context, "Permission Denied", Toast.LENGTH_LONG).show()
+            Toast.makeText(context, "Standort nicht freigegeben", Toast.LENGTH_LONG).show()
         }
     }
 
@@ -89,7 +89,7 @@ fun LocationButton(context: Context) {
                 //Errormessage if location is null
                 //https://stackoverflow.com/questions/72168842/location-always-returning-null-all-the-time
                 if(currentLocationForPrint.latitude == null && currentLocationForPrint.longitude == null ) {
-                    Toast.makeText(context, "Something went wrong!", Toast.LENGTH_LONG).show()
+                    Toast.makeText(context, "Etwas ist schief gelaufen!", Toast.LENGTH_LONG).show()
                 }
 
             }
