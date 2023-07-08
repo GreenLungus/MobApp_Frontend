@@ -23,7 +23,9 @@ data class ShowContainer(
 )
 
 //for storing location
+//include null ability because errors could return null locations, want to display an usr msg if so
+//initialised with null because la(0.0), lo(0.0) is also a location (African ocean/shore area)
 data class LocationDetails(
-    val latitude: Double,
-    val longitude: Double
+    val latitude: Double?,
+    val longitude: Double?
 )

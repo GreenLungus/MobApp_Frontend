@@ -30,7 +30,8 @@ import com.google.android.gms.location.LocationServices
 fun Locationing (context: Context) {
 
     var currentLocation by remember {
-        mutableStateOf(LocationDetails(0.toDouble(), 0.toDouble()))
+        //mutableStateOf(LocationDetails(0.toDouble(), 0.toDouble() ))
+        mutableStateOf(LocationDetails(null, null ))
     }
     //getting locationdata to print for debug
     currentLocationForPrint = currentLocation
@@ -59,12 +60,15 @@ fun LocationButton(context: Context) {
         ActivityResultContracts.RequestMultiplePermissions()
     ) { permissionsMap ->
         val areGranted = permissionsMap.values.reduce { acc, next -> acc && next }
+
         if (areGranted) {
             locationRequired = true
             startLocationUpdates()
-            Toast.makeText(context, "Permission Granted", Toast.LENGTH_SHORT).show()
+
+            Toast.makeText(context, "Permission Granted", Toast.LENGTH_LONG).show()
+
         } else {
-            Toast.makeText(context, "Permission Denied", Toast.LENGTH_SHORT).show()
+            Toast.makeText(context, "Permission Denied", Toast.LENGTH_LONG).show()
         }
     }
 
@@ -80,6 +84,13 @@ fun LocationButton(context: Context) {
                 }) {
                 // if access granted: Get the location
                 startLocationUpdates()
+
+                //Errormessage if location is null
+                //https://stackoverflow.com/questions/72168842/location-always-returning-null-all-the-time
+                if(currentLocationForPrint.latitude == null && currentLocationForPrint.longitude == null ) {
+                    Toast.makeText(context, "Something went wrong!", Toast.LENGTH_LONG).show()
+                }
+
             }
             else {
                 launcherMultiplePermissions.launch(permissions)
