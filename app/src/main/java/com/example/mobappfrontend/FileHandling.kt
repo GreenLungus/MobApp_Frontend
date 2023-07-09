@@ -7,7 +7,7 @@ import kotlinx.serialization.json.Json
 /*TODO: convert Json object to kotlin data class*/
 //Separating and saveing json files to dataclass
 //Class FileHandling.kt done by Julian
-fun parse(context: Context) {
+fun converter(context: Context) {
     // opens the json file and safes it in input stream
     val inputStream = context.openFileInput("filtered_shows.json")
     // reads the json file and safes it as string

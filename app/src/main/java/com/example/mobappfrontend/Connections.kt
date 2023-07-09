@@ -22,7 +22,7 @@ suspend fun beRequestMan(context: Context, dbitem: String) {
             it.write(response.toByteArray())
         }
         //calls parse function to store data in our list
-        parse(context)
+        converter(context)
     } catch(e: Exception) {
         // Prints error if request was not success
         e.printStackTrace()
@@ -48,7 +48,7 @@ suspend fun beRequestLocation(context: Context, latitude: Double?, longitude: Do
             it.write(response.toByteArray())
         }
         //calls parse function to store data in our list
-        parse(context)
+        converter(context)
     } catch(e: Exception) {
         // Prints error if request was not success
         e.printStackTrace()
