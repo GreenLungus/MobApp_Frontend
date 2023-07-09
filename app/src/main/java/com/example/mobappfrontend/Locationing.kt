@@ -77,21 +77,7 @@ fun LocationButton(context: Context) {
         }
         }
     }
-    /*
-    { permissionsList ->
-        val areGranted = permissionsList.values.reduce { acc, next -> acc && next }
 
-        if (areGranted) {
-            locationRequired = true
-            startLocationUpdates()
-
-            Toast.makeText(context, "Standort freigegeben", Toast.LENGTH_LONG).show()
-
-        } else {
-            Toast.makeText(context, "Standort nicht freigegeben", Toast.LENGTH_LONG).show()
-        }
-    }
-    */
     //Button with Location Icon
     FilledTonalIconButton(
         shape = RoundedCornerShape(15.dp),
