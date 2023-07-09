@@ -26,14 +26,15 @@ import com.google.android.gms.location.LocationServices
 import kotlinx.coroutines.runBlocking
 import android.Manifest
 
-
+//setting up the location service by getting the Client
+//setting up callback to be invoked when new location is computed
 @Composable
 fun Locationing (context: Context) {
 
     var currentLocation by remember {
         mutableStateOf(LocationDetails(null, null ))
     }
-    //getting locationdata to print for debug
+    //getting location data to print for debug and to use across application
     currentLocationForPrint = currentLocation
 
     // implemented as in documentation:
@@ -53,6 +54,9 @@ fun Locationing (context: Context) {
 
 }
 
+//location button with functionality
+//permissions (AndroidManifest.xml) are asked for and rechecked by re-clicking
+//location update and backendrequest is started when button clicked and permission is granted
 @Composable
 fun LocationButton(context: Context) {
 
@@ -114,6 +118,7 @@ fun LocationButton(context: Context) {
 }
 
 
+//periodically updating the computed location data when service is running.
 @SuppressLint("MissingPermission")
 fun startLocationUpdates() {
     locationCallback?.let {

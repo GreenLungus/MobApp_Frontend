@@ -50,6 +50,7 @@ import coil.compose.rememberAsyncImagePainter
 import kotlinx.coroutines.runBlocking
 
 
+//base layout structured in top-section, middle-section and bottom-section
 //TODO: base app layout
 @Composable
 fun AppContent(context: Context) {
@@ -85,6 +86,8 @@ fun AppContent(context: Context) {
                 Box(
                     modifier = Modifier
                 ) {
+                    //thus the application is not for publishing, the ard logo was used as an example for the look of the application.
+                    //there is no interrelation between ARD and this application. Copyright by ARD
                     val image = painterResource(id = R.drawable.ard_logo)
                     Image(
                         painter = image,
@@ -97,6 +100,7 @@ fun AppContent(context: Context) {
     }
 }
 
+//Content structure of the top-section including spacers, dd menu and the location button
 //TODO: Header
 @Composable
 fun TopSection(context: Context) {
@@ -117,7 +121,7 @@ fun TopSection(context: Context) {
                     .weight(0.5f)){ }
                 Row(modifier = Modifier
                     .fillMaxSize()
-                    .weight(2.3f)){ DropdownCitiesSelectable(context) }
+                    .weight(2.3f)){ DropdownCitiesSelectable(context) } //holding and calling the Dropdownmenu
             }
             Column(
                 modifier = Modifier
@@ -138,12 +142,13 @@ fun TopSection(context: Context) {
                     modifier = Modifier
                         .align(Alignment.CenterHorizontally)
                 ) {
-                    LocationButton(context)
+                    LocationButton(context) // holding and calling the location button
                 }
             }
         }
     }
 }
+
 
 //TODO: Dropdownmenu
 @OptIn(ExperimentalMaterialApi::class)
@@ -158,7 +163,7 @@ fun DropdownCitiesSelectable(context: Context) {
         mutableStateOf(cities[0])
     }
     // box
-    ExposedDropdownMenuBox(
+    ExposedDropdownMenuBox( //get the expandstate
         modifier = Modifier
             .clip(RoundedCornerShape(13.dp)),
         expanded = expandstate,
@@ -169,7 +174,7 @@ fun DropdownCitiesSelectable(context: Context) {
         // text field
         TextField(
             value = selectedItem, //display selected item, later IMPORTANT for backend communication
-            onValueChange = {},    //left empty
+            onValueChange = {},
             readOnly = true,
             label = { Text(text = "Stadt auswählen:") },
             trailingIcon = {

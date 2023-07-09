@@ -54,13 +54,13 @@ class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
-            Locationing(this)
-            AppContent(this)
+            Locationing(this) //starting location service
+            AppContent(this) //starting to compose base ui elements
         }
     }
 
     //https://developer.android.com/training/location/request-updates
-    //stops location service and resumes when app is left and resumed
+    //stops and resumes location service when app is left or resumed / refocused - important for cpu and power consumption
     override fun onResume() {
         super.onResume()
         if (locationRequired) { startLocationUpdates() }
@@ -73,6 +73,8 @@ class MainActivity : ComponentActivity() {
 }
 
 
+//preview handler used to fast display ui elements
+//mainly used in the beginning without context
 //TODO: Preview renderer
 /*@Composable
 @Preview
