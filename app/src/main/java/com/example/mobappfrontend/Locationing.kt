@@ -27,7 +27,6 @@ import kotlinx.coroutines.runBlocking
 
 
 //Based on this example: https://www.howtodoandroid.com/get-the-current-location-on-jetpack-compose/
-
 @Composable
 fun Locationing (context: Context) {
 
@@ -46,7 +45,7 @@ fun Locationing (context: Context) {
     locationCallback = object : LocationCallback() {
         override fun onLocationResult(locationResult: LocationResult) {
             for (location in locationResult.locations) {
-                // Update UI with location data
+                // Update with location data
                 currentLocation = LocationDetails(location.latitude, location.longitude)
             }
         }
@@ -56,12 +55,11 @@ fun Locationing (context: Context) {
 
 @Composable
 fun LocationButton(context: Context) {
-
     //Call Androids PermissionPopup and Toasters for Access information
     val launcherMultiplePermissions = rememberLauncherForActivityResult(
         ActivityResultContracts.RequestMultiplePermissions()
-    ) { permissionsMap ->
-        val areGranted = permissionsMap.values.reduce { acc, next -> acc && next }
+    ) { permissionsList ->
+        val areGranted = permissionsList.values.reduce { acc, next -> acc && next }
 
         if (areGranted) {
             locationRequired = true

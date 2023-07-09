@@ -5,7 +5,7 @@ import io.ktor.client.HttpClient
 import io.ktor.client.request.get
 
 //TODO: Backend request
-//Class Connections.kt done by Julian
+//Connections.kt done by Julian
 
 //dbitems is the city name and context will be needed to access data operation
 suspend fun beRequestMan(context: Context, cityName: String) {
