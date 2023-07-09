@@ -10,6 +10,7 @@ data class Topiccard(
 )
 
 //containers for data after separating json file
+//data class Show and ShowContainer done by Julian
 @Serializable
 data class Show(
     val title: String,
