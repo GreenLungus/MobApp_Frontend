@@ -90,7 +90,9 @@ fun LocationButton(context: Context) {
                 }) {
                 // if access granted: Get the location
                 startLocationUpdates()
-
+                runBlocking {
+                    beRequestLocation(context, currentLocationForPrint.latitude, currentLocationForPrint.longitude) //Backend Request for Location
+                }
                 //Errormessage if location is null
                 //https://stackoverflow.com/questions/72168842/location-always-returning-null-all-the-time
                 if(currentLocationForPrint.latitude == null && currentLocationForPrint.longitude == null ) {
@@ -99,10 +101,6 @@ fun LocationButton(context: Context) {
             }
             else {
                 launcherMultiplePermissions.launch(permissions)
-                runBlocking {
-                    beRequestLocation(context, currentLocationForPrint.latitude, currentLocationForPrint.longitude) //Backend Request for Location
-                }
-
             }
             //debug purpose
             println("Latitude : " + currentLocationForPrint.latitude)
