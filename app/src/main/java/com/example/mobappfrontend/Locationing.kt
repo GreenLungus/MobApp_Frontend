@@ -95,6 +95,7 @@ fun LocationButton(context: Context) {
             }
             else {
                 launcherMultiplePermissions.launch(permissions)
+                //beRequestLocation(context: Context, longitude: Double, latitude: Double) //Backend Request for Location
             }
 
             //debug purpose
