@@ -1,3 +1,5 @@
+<!--Used: https://stackoverflow.com/questions/6760585/accessing-localhostport-from-android-emulator -->
+
 <network-security-config>
     <domain-config cleartextTrafficPermitted="true">
         <domain includeSubdomains="true">127.0.0.1</domain>

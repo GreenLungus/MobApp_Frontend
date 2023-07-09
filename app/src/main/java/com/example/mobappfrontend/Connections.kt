@@ -8,6 +8,10 @@ import io.ktor.client.request.get
 //Connections.kt done by Julian
 
 //dbitems is the city name and context will be needed to access data operation
+
+// Oriented by: https://ktor.io/docs/request.html#http-method
+// https://www.javatpoint.com/kotlin-android-read-and-write-internal-storage
+// https://stackoverflow.com/questions/6760585/accessing-localhostport-from-android-emulator
 suspend fun beRequestMan(context: Context, cityName: String) {
     // Creation of HTTP-Client
     val client = HttpClient {}
