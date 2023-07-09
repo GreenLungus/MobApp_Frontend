@@ -14,16 +14,11 @@ import kotlinx.coroutines.withContext
 import kotlinx.serialization.json.Json
 
 //TODO: Backend request
+//Class Connections.kt done by Julian
 suspend fun beRequestMan(context: Context, dbitem: String) {
     // Creation of HTTP-Client
     val client = HttpClient {
-        install(JsonFeature) {
-            serializer = KotlinxSerializer(Json {
-                prettyPrint = true
-                isLenient = true
-                ignoreUnknownKeys = true
-            })
-        }
+        install(JsonFeature) { }
     }
 
     // Sending GET-Request to Backend-Server
@@ -37,25 +32,17 @@ suspend fun beRequestMan(context: Context, dbitem: String) {
         }
         parse(context)
     } catch(e: Exception) {
-        // Hier können Sie handhaben, wie Sie auf den Fehler reagieren möchten.
-        // z.B. können Sie die Ausnahme ausdrucken, um zu sehen, was schief gelaufen ist:
+        // Prints error if request was not success
         e.printStackTrace()
     } finally {
         // close HTTP-Client
-        // Wir tun dies im finally-Block, um sicherzustellen, dass der Client auch im Falle eines Fehlers geschlossen wird.
         client.close()
     }
 }
 
 suspend fun beRequestLocation(context: Context, latitude: Double?, longitude: Double?) {
     val client = HttpClient {
-        install(JsonFeature) {
-            serializer = KotlinxSerializer(Json {
-                prettyPrint = true
-                isLenient = true
-                ignoreUnknownKeys = true
-            })
-        }
+        install(JsonFeature) { }
     }
 
     val url = "http://10.0.2.2:8080/getCityByCoordinates?latitude=$latitude&longitude=$longitude"
@@ -69,12 +56,10 @@ suspend fun beRequestLocation(context: Context, latitude: Double?, longitude: Do
         }
         parse(context)
     } catch(e: Exception) {
-        // Hier können Sie handhaben, wie Sie auf den Fehler reagieren möchten.
-        // z.B. können Sie die Ausnahme ausdrucken, um zu sehen, was schief gelaufen ist:
+        // Prints error if request was not success
         e.printStackTrace()
     } finally {
         // close HTTP-Client
-        // Wir tun dies im finally-Block, um sicherzustellen, dass der Client auch im Falle eines Fehlers geschlossen wird.
         client.close()
     }
 }
