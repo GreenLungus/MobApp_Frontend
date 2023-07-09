@@ -40,7 +40,6 @@ var locationCallback: LocationCallback? = null
 var fusedLocationClient: FusedLocationProviderClient? = null
 var locationRequired = false
 
-
 // array of all needed permissions to check with
 val permissions = arrayOf(
     Manifest.permission.ACCESS_COARSE_LOCATION,
@@ -55,10 +54,8 @@ class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
-
             Locationing(this)
             AppContent(this)
-
         }
     }
 

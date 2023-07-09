@@ -24,6 +24,7 @@ import com.google.android.gms.location.LocationRequest
 import com.google.android.gms.location.LocationResult
 import com.google.android.gms.location.LocationServices
 import kotlinx.coroutines.runBlocking
+import android.Manifest
 
 
 //Based on this example: https://www.howtodoandroid.com/get-the-current-location-on-jetpack-compose/
@@ -31,7 +32,6 @@ import kotlinx.coroutines.runBlocking
 fun Locationing (context: Context) {
 
     var currentLocation by remember {
-        //mutableStateOf(LocationDetails(0.toDouble(), 0.toDouble() ))
         mutableStateOf(LocationDetails(null, null ))
     }
     //getting locationdata to print for debug
@@ -46,6 +46,7 @@ fun Locationing (context: Context) {
         override fun onLocationResult(locationResult: LocationResult) {
             for (location in locationResult.locations) {
                 // Update with location data
+                println("Location: " + location.latitude + " and " + location.longitude)
                 currentLocation = LocationDetails(location.latitude, location.longitude)
             }
         }
@@ -55,10 +56,29 @@ fun Locationing (context: Context) {
 
 @Composable
 fun LocationButton(context: Context) {
+
     //Call Androids PermissionPopup and Toasters for Access information
     val launcherMultiplePermissions = rememberLauncherForActivityResult(
         ActivityResultContracts.RequestMultiplePermissions()
-    ) { permissionsList ->
+    ){ permissions ->
+        when {
+            permissions.getOrDefault(Manifest.permission.ACCESS_FINE_LOCATION, false) -> {
+                // Precise location access granted.
+                Toast.makeText(context, "Standort freigegeben", Toast.LENGTH_LONG).show()
+                locationRequired = true
+                startLocationUpdates()
+            }
+            permissions.getOrDefault(Manifest.permission.ACCESS_COARSE_LOCATION, false) -> {
+                // Only approximate location access granted.
+                Toast.makeText(context, "Präziser Standort benötigt", Toast.LENGTH_LONG).show()
+            } else -> {
+            // No location access granted.
+            Toast.makeText(context, "Standort nicht freigegeben", Toast.LENGTH_LONG).show()
+        }
+        }
+    }
+    /*
+    { permissionsList ->
         val areGranted = permissionsList.values.reduce { acc, next -> acc && next }
 
         if (areGranted) {
@@ -71,7 +91,7 @@ fun LocationButton(context: Context) {
             Toast.makeText(context, "Standort nicht freigegeben", Toast.LENGTH_LONG).show()
         }
     }
-
+    */
     //Button with Location Icon
     FilledTonalIconButton(
         shape = RoundedCornerShape(15.dp),
@@ -90,7 +110,6 @@ fun LocationButton(context: Context) {
                 if(currentLocationForPrint.latitude == null && currentLocationForPrint.longitude == null ) {
                     Toast.makeText(context, "Etwas ist schief gelaufen!", Toast.LENGTH_LONG).show()
                 }
-
             }
             else {
                 launcherMultiplePermissions.launch(permissions)
@@ -99,7 +118,6 @@ fun LocationButton(context: Context) {
                 }
 
             }
-
             //debug purpose
             println("Latitude : " + currentLocationForPrint.latitude)
             println("Longitude : " + currentLocationForPrint.longitude)
@@ -127,5 +145,6 @@ fun startLocationUpdates() {
             it,
             Looper.getMainLooper()
         )
+
     }
 }
