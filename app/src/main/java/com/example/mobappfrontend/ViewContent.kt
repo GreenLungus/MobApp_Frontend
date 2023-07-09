@@ -195,6 +195,7 @@ fun DropdownCitiesSelectable(context: Context) {
                     //on click Dropdown (for each city element in DD Menu)
                     selectedItem = selectedOption
                     expandstate = false
+                    //coroutine for suspend fun beRequest
                     runBlocking {
                         beRequestMan(context, selectedItem) // <<---- BE Request with selected city
                     }

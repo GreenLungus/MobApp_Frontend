@@ -47,7 +47,7 @@ suspend fun beRequestMan(context: Context, dbitem: String) {
     }
 }
 
-suspend fun beRequestLocation(context: Context, latitude: Double, longitude: Double) {
+suspend fun beRequestLocation(context: Context, latitude: Double?, longitude: Double?) {
     val client = HttpClient {
         install(JsonFeature) {
             serializer = KotlinxSerializer(Json {

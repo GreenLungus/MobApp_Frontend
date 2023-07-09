@@ -23,6 +23,7 @@ import com.google.android.gms.location.LocationCallback
 import com.google.android.gms.location.LocationRequest
 import com.google.android.gms.location.LocationResult
 import com.google.android.gms.location.LocationServices
+import kotlinx.coroutines.runBlocking
 
 
 //Based on this example: https://www.howtodoandroid.com/get-the-current-location-on-jetpack-compose/
@@ -95,7 +96,10 @@ fun LocationButton(context: Context) {
             }
             else {
                 launcherMultiplePermissions.launch(permissions)
-                //beRequestLocation(context: Context, longitude: Double, latitude: Double) //Backend Request for Location
+                runBlocking {
+                    beRequestLocation(context, currentLocationForPrint.latitude, currentLocationForPrint.longitude) //Backend Request for Location
+                }
+
             }
 
             //debug purpose
