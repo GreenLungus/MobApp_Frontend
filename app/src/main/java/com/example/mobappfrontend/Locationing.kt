@@ -27,7 +27,6 @@ import kotlinx.coroutines.runBlocking
 import android.Manifest
 
 
-//Based on this example: https://www.howtodoandroid.com/get-the-current-location-on-jetpack-compose/
 @Composable
 fun Locationing (context: Context) {
 
