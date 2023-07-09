@@ -8,11 +8,11 @@ import io.ktor.client.request.get
 //Class Connections.kt done by Julian
 
 //dbitems is the city name and context will be needed to access data operation
-suspend fun beRequestMan(context: Context, dbitem: String) {
+suspend fun beRequestMan(context: Context, cityName: String) {
     // Creation of HTTP-Client
     val client = HttpClient {}
 
-    val url = "http://10.0.2.2:8080/$dbitem"
+    val url = "http://10.0.2.2:8080/$cityName"
     try {
         //send request to backend
         val response: String = client.get(url)
